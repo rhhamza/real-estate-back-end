@@ -1,4 +1,4 @@
-package pi.dev.realestate.services;
+package pi.dev.realestate.services.interfaces;
 
 import pi.dev.realestate.entities.Company;
 

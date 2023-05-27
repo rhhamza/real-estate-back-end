@@ -1,4 +1,6 @@
-package pi.dev.realestate.services;
+package pi.dev.realestate.services.impl;
 
-public class OrderService implements IOrderService{
+import pi.dev.realestate.services.interfaces.IOrderService;
+
+public class OrderService implements IOrderService {
 }

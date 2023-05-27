@@ -3,6 +3,7 @@ package pi.dev.realestate.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.security.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -23,9 +24,6 @@ public class Company {
     private String email;
     private String logo;
     private StatusType status;
-    @Temporal(TemporalType.DATE)
-    private Date createdAt;
-    @Temporal(TemporalType.DATE)
-    private Date updatedAt;
+    private Timestamp timestamp;
 
 }
