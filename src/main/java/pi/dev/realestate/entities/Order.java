@@ -3,9 +3,11 @@ package pi.dev.realestate.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.security.Timestamp;
 import java.util.Date;
 
 @Entity
+@Table(name = "orders")
 @Getter
 @Setter
 @ToString
@@ -20,8 +22,7 @@ public class Order {
     @Temporal(TemporalType.DATE)
     private Date endDate;
     private StatusType status;
-    private Date createdAt;
-    private Date updatedAt;
+    private Timestamp timestamp;
 
    /*
     StartDate: DateTime
