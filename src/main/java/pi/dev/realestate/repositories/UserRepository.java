@@ -6,6 +6,6 @@ import pi.dev.realestate.entities.UserEntity;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
-    Optional<UserEntity> findByFirstname(String name);
-    Boolean existsByfirstname (String name);
+    Optional<UserEntity> findByEmail(String email);
+    Boolean existsByEmail (String email);
 }

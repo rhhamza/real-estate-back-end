@@ -16,7 +16,7 @@ public class UserController {
     IUserService iUserService;
 
     @PostMapping("/add")
-    public UserEntity addPropertyOffer (@RequestBody UserEntity userEntity) {
+    public UserEntity addUser (@RequestBody UserEntity userEntity) {
         return iUserService.addUser(userEntity);
     }
 }

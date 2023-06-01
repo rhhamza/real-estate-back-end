@@ -25,7 +25,7 @@ public class UserEntity {
     private String phone;
 
     @Enumerated(EnumType.STRING)
-    private pi.dev.realestate.entities.StatusType status;
+    private StatusType status;
 
     private String email;
     private String password;
