@@ -31,9 +31,9 @@ public class UserEntity {
     private String email;
     private String password;
     @ManyToMany(fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL)
+                cascade = CascadeType.ALL)
     @JoinTable(name = "user_roles",joinColumns = @JoinColumn(name = "user_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id"))
+    inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id"))
     private List<Roles> roles = new ArrayList<>();
     @Column(nullable = false, updatable = false)
     private Timestamp createdAt;
@@ -51,6 +51,8 @@ public class UserEntity {
     private List<PublicationReaction> reacts = new ArrayList<>();
     //wael
 
+    @OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Report> reports;
     @PrePersist
     protected void onCreate() {
         createdAt = new Timestamp(System.currentTimeMillis());

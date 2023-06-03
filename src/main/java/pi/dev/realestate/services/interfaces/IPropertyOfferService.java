@@ -8,5 +8,7 @@ public interface IPropertyOfferService {
     PropertyOffer addPropertyOffer(PropertyOffer propertyOffer);
     List<PropertyOffer> getAllPropertyOffers();
     PropertyOffer getPropertyOffer (int id);
+    PropertyOffer updatePropertyOffer(int id, PropertyOffer propertyOffer);
+    void deletePropertyOffer(int id);
 
 }
