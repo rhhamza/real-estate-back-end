@@ -22,7 +22,7 @@ public class PropertyOffer {
     String reference;
     String title;
     @Enumerated(EnumType.STRING)
-    EnumType type;
+    pi.dev.realestate.entities.EnumType type;
     @Enumerated(EnumType.STRING)
     CategoryType category;
     Double price;
@@ -32,16 +32,13 @@ public class PropertyOffer {
     int bathrooms;
     @Column(nullable = false, updatable = false)
     Timestamp createdAt;
-
     @Column(nullable = false)
     Timestamp updatedAt;
-
     @PrePersist
     protected void onCreate() {
         createdAt = new Timestamp(System.currentTimeMillis());
         updatedAt = new Timestamp(System.currentTimeMillis());
     }
-
     @PreUpdate
     protected void onUpdate() {
         updatedAt = new Timestamp(System.currentTimeMillis());
