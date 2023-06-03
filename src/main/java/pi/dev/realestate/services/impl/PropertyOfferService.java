@@ -10,16 +10,16 @@ import java.util.List;
 public class PropertyOfferService implements IPropertyOfferService {
     @Autowired
     PropertyOfferRepository propertyOfferRepository;
-
     @Override
     public PropertyOffer addPropertyOffer(PropertyOffer propertyOffer){
         propertyOfferRepository.save(propertyOffer);
         return propertyOffer;
     }
-
+    @Override
     public List<PropertyOffer> getAllPropertyOffers(){
         return propertyOfferRepository.findAll();
     }
+    @Override
     public PropertyOffer getPropertyOffer(int id){
         return propertyOfferRepository.findById(id).orElse(null);
     }
