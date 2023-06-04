@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pi.dev.realestate.entities.DTO.AuthResponseDto;
 import pi.dev.realestate.entities.DTO.LoginDTO;
 import pi.dev.realestate.entities.DTO.RegisterDTO;
 import pi.dev.realestate.entities.Roles;
@@ -19,6 +20,8 @@ import pi.dev.realestate.entities.StatusType;
 import pi.dev.realestate.entities.UserEntity;
 import pi.dev.realestate.repositories.RolesRepository;
 import pi.dev.realestate.repositories.UserRepository;
+import pi.dev.realestate.security.JWTGenerator;
+import pi.dev.realestate.security.JwtAuthEntryPoint;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -27,6 +30,7 @@ import java.util.Collections;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+    JWTGenerator jwtGenerator;
     AuthenticationManager authenticationManager;
     UserRepository userRepository;
     RolesRepository rolesRepository;
@@ -36,23 +40,26 @@ public class AuthController {
     public AuthController(AuthenticationManager authenticationManager,
                           UserRepository userRepository,
                           RolesRepository rolesRepository,
-                          PasswordEncoder passwordEncoder) {
+                          PasswordEncoder passwordEncoder,
+                          JWTGenerator jwtGenerator) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.rolesRepository = rolesRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtGenerator = jwtGenerator;
     }
 
     @PostMapping("login")
-    public ResponseEntity<String> login(@RequestBody LoginDTO loginDto){
+    public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDTO loginDto){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginDto.getEmail(),
                         loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        return new ResponseEntity<>("your login success !", HttpStatus.OK);
+        String token = jwtGenerator.generateToken(authentication);
+        return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
     }
+
     @PostMapping("registerclient")
     public ResponseEntity<String> register(@RequestBody UserEntity userEntity) {
         if (userRepository.existsByEmail(userEntity.getEmail())) {
