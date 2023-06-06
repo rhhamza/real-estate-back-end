@@ -2,5 +2,6 @@ package pi.dev.realestate.entities;
 
 public enum StatusType {
     ACTIVE,
-    INACTIVE
+    INACTIVE,
+    NOTIFIED
 }

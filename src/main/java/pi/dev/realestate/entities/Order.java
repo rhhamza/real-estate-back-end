@@ -21,5 +21,22 @@ public class Order {
     @Temporal(TemporalType.DATE)
     private Date endDate;
     private StatusType status;
-    Timestamp timestamp;
+    private int price;
+    @Column(nullable = false, updatable = false)
+    Timestamp createdAt;
+    @Column(nullable = false)
+    Timestamp updatedAt;
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Timestamp(System.currentTimeMillis());
+        updatedAt = new Timestamp(System.currentTimeMillis());
+    }
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = new Timestamp(System.currentTimeMillis());
+    }
+
+    @OneToMany
+    Company company;
 }
+
