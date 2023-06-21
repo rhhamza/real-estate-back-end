@@ -1,6 +1,5 @@
 package pi.dev.realestate.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,7 +18,4 @@ public class Conversation {
     private String name;
     @ManyToMany(cascade = CascadeType.PERSIST)
     private List<UserEntity> participants;
-    @OneToMany(mappedBy = "conversation", cascade = CascadeType.PERSIST)
-    @JsonIgnoreProperties("conversation")
-    private List<Message> messages;
 }

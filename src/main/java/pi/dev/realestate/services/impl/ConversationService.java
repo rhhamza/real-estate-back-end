@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pi.dev.realestate.entities.Company;
 import pi.dev.realestate.entities.Conversation;
-import pi.dev.realestate.entities.Message;
 import pi.dev.realestate.entities.UserEntity;
 import pi.dev.realestate.exceptions.ConversationNotFoundException;
 import pi.dev.realestate.exceptions.ParticipantExistsException;
@@ -26,7 +25,7 @@ public class ConversationService implements IConversationService {
 
     @Override
     public List<Conversation> getConversationsByUser(int company) {
-        return conversationRepository.findByParticipantsID(company);
+        return conversationRepository.findByParticipantsId(company);
     }
 
     @Override
@@ -47,32 +46,5 @@ public class ConversationService implements IConversationService {
         Conversation updatedConversation = conversationRepository.save(conversation);
 
         return updatedConversation;
-    }
-    @Override
-    public Conversation updateConversation(Long conversationId, Message message) {
-        Optional<Conversation> conversationOptional = conversationRepository.findById(conversationId);
-        Conversation conversation = conversationOptional.get();
-        conversation.getMessages().add(message);
-
-        return conversationRepository.save(conversation);
-    }
-
-    @Override
-    public Conversation getConversationbyId(Long id){
-        Optional<Conversation> optionalConversation = conversationRepository.findById(id);
-        return optionalConversation.get();
-    }
-    @Override
-    public Optional<Conversation> getConversationByUserFirstNamAndLastName(String firstName, String lastName) {
-        return conversationRepository.findByParticipantsFirstnameAndParticipantsLastname(firstName, lastName);
-    }
-    @Override
-    public Optional<Conversation> getConversationByUserFirstNameOrLastName(String firstName, String lastName) {
-        return conversationRepository.findByParticipantsFirstnameOrParticipantsLastname(firstName, lastName);
-    }
-
-    @Override
-    public List<Conversation> getConversations() {
-        return conversationRepository.findAll();
     }
 }

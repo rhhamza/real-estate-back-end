@@ -19,7 +19,7 @@ public class MyHandler extends TextWebSocketHandler {
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException, InterruptedException {
         log.info("Test message {}", message.toString());
         list.add(session);
-        session.sendMessage( new TextMessage("Received message: " + message.getPayload()));
+        session.sendMessage( new TextMessage("Hello world"));
         Thread.sleep(1000);
     }
 

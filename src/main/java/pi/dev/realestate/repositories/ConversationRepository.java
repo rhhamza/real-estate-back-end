@@ -8,10 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ConversationRepository extends JpaRepository<Conversation, Long> {
-    List<Conversation> findByParticipantsID(int company);
-    Optional<Conversation> findById(Long id);
-    Optional<Conversation> findByIdAndParticipants(Long conversationId, Company company);
-    Optional<Conversation> findByParticipantsFirstnameAndParticipantsLastname(String firstName, String lastName);
-    Optional<Conversation> findByParticipantsFirstnameOrParticipantsLastname(String firstName, String lastName);
+    List<Conversation> findByParticipantsId(int company);
 
+    Optional<Conversation> findByIdAndParticipants(Long conversationId, Company company);
 }
