@@ -14,5 +14,11 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Integer>{
 
 
-    List<Order> findByEndDateBeforeAndEndDateAfter(LocalDateTime localDateTime, LocalDateTime localDateTime1);
+    List<Order> findByEndDateBeforeAndEndDateAfter(LocalDateTime startDate, LocalDateTime endDate);
+    List<Order> findOrdersByCompanyId(Integer companyId);
+
+    List<Order> findByStartDateBetween(Date startDate, Date endDate);
+
+
+
 }

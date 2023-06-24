@@ -5,6 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pi.dev.realestate.entities.Order;
+import org.springframework.web.multipart.MultipartFile;
+import pi.dev.realestate.entities.ResponseMessage;
+import pi.dev.realestate.services.interfaces.IFilesStorageService;
 import pi.dev.realestate.services.interfaces.IOrderService;
 import java.util.List;
 
@@ -19,6 +22,13 @@ public class OrderController {
     public ResponseEntity<Object> addOrder(@RequestBody Order order) {
         Order addedOrder = iOrderService.addOrder(order);
         return new ResponseEntity<>(addedOrder, HttpStatus.CREATED);
+    }
+
+
+
+    @PostMapping("/addOrder/{coId}")
+    public Order addOrderAndAssignToCompany(@RequestBody Order order, @PathVariable("coId") int companyId) {
+        return iOrderService.addOrderAndAssignToCompany(order, companyId);
     }
 
     @GetMapping("/all")
@@ -52,4 +62,8 @@ public class OrderController {
         iOrderService.deleteOrder (id);
         return new ResponseEntity<>("Order deleted successfully", HttpStatus.OK);
     }
+
+
+
+
 }

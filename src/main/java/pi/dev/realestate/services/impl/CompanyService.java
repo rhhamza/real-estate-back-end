@@ -1,12 +1,21 @@
 package pi.dev.realestate.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+
 import org.springframework.stereotype.Service;
 import pi.dev.realestate.entities.Company;
+import pi.dev.realestate.entities.Order;
+import pi.dev.realestate.entities.StatusType;
 import pi.dev.realestate.repositories.CompanyRepository;
+import pi.dev.realestate.repositories.OrderRepository;
+import pi.dev.realestate.repositories.RolesRepository;
 import pi.dev.realestate.services.interfaces.ICoompanyService;
 
+import javax.management.relation.Role;
 import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -14,6 +23,10 @@ public class CompanyService implements ICoompanyService {
 
     @Autowired
     CompanyRepository companyRepository;
+
+    Role role;
+    Company company;
+
 
     @Override
     public Company addCompany(Company company){
@@ -52,4 +65,12 @@ public class CompanyService implements ICoompanyService {
     public void deleteCompany(int id) {
         companyRepository.deleteById(id);
     }
+
+    @Override
+    public List<Company> getCompaniesWithOrdersByStatus(StatusType status) {
+        return companyRepository.findCompaniesWithOrdersByStatus(status);
+    }
+
+
+
 }

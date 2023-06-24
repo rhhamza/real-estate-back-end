@@ -3,6 +3,7 @@ package pi.dev.realestate.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.persistence.EnumType;
 import java.sql.Timestamp;
 import java.util.Date;
 @Entity
@@ -29,14 +30,14 @@ public class Order {
     @PrePersist
     protected void onCreate() {
         createdAt = new Timestamp(System.currentTimeMillis());
-        updatedAt = new Timestamp(System.currentTimeMillis());
+        updatedAt= new Timestamp(System.currentTimeMillis());
     }
     @PreUpdate
     protected void onUpdate() {
         updatedAt = new Timestamp(System.currentTimeMillis());
     }
 
-    @OneToMany
+    @ManyToOne
     Company company;
 }
 

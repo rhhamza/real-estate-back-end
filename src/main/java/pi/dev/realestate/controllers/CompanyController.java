@@ -11,7 +11,7 @@ import pi.dev.realestate.services.interfaces.ICoompanyService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/order")
+@RequestMapping("company")
 public class CompanyController {
 
     @Autowired
@@ -54,4 +54,5 @@ public class CompanyController {
         iCompanyService.deleteCompany (id);
         return new ResponseEntity<>("Company deleted successfully", HttpStatus.OK);
     }
+
 }
