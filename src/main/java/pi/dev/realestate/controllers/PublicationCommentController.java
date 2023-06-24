@@ -1,5 +1,6 @@
 package pi.dev.realestate.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +10,7 @@ import pi.dev.realestate.services.impl.PublicationCommentService;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/publicationComments")
 public class PublicationCommentController {
@@ -35,11 +37,15 @@ public class PublicationCommentController {
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<PublicationComment> createComment(@RequestBody PublicationComment comment) {
-        PublicationComment createdComment = commentService.createPublicationComment(comment);
+    @PostMapping("/add/{idUser}/{idPublication}")
+    public ResponseEntity<PublicationComment> createComment(@RequestBody PublicationComment comment,
+                                                            @PathVariable("idUser") Integer idUser,
+                                                            @PathVariable("idPublication") Integer idPublication) {
+
+        PublicationComment createdComment = commentService.createPublicationComment(comment, idUser, idPublication);
         return new ResponseEntity<>(createdComment, HttpStatus.CREATED);
     }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<PublicationComment> updateComment(@PathVariable int id, @RequestBody PublicationComment comment) {
