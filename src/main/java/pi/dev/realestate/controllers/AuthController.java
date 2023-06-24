@@ -54,17 +54,17 @@ public class AuthController {
         return new ResponseEntity<>("your login success !", HttpStatus.OK);
     }
     @PostMapping("registerclient")
-    public ResponseEntity<String> register(@RequestBody RegisterDTO registerDto) {
-        if (userRepository.existsByEmail(registerDto.getEmail())) {
+    public ResponseEntity<String> register(@RequestBody UserEntity userEntity) {
+        if (userRepository.existsByEmail(userEntity.getEmail())) {
             return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
         }
 
         UserEntity user = new UserEntity();
-        user.setFirstname(user.getFirstname());
-        user.setLastname(user.getLastname());
-        user.setEmail(registerDto.getEmail());
-        user.setPassword(passwordEncoder.encode((registerDto.getPassword())));
-        user.setPhone(user.getPhone());
+        user.setFirstname(userEntity.getFirstname());
+        user.setLastname(userEntity.getLastname());
+        user.setEmail(userEntity.getEmail());
+        user.setPassword(passwordEncoder.encode((userEntity.getPassword())));
+        user.setPhone(userEntity.getPhone());
         user.setStatus(StatusType.ACTIVE);
 
         Roles roles = rolesRepository.findByName("client").get();
