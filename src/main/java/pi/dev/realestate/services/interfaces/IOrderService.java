@@ -1,5 +1,7 @@
 package pi.dev.realestate.services.interfaces;
 
+import pi.dev.realestate.entities.Order;
+
 import java.util.List;
 
 public interface IOrderService {
@@ -15,9 +17,11 @@ public interface IOrderService {
 
     Order addOrderAndAssignToCompany(Order order, int companyId);
 
-    void sendNotificationBeforeEndDate(int days);
+    //void sendNotificationBeforeEndDate(int days);
 
     List<Order> getOrdersByCompany(Integer companyId);
+
+    double calculateTotalRevenue(Integer companyId);
 
     //OrderReport generateOrderReport(Date startDate, Date endDate);
 

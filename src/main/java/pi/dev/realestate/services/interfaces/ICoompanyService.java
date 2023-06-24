@@ -17,6 +17,7 @@ public interface ICoompanyService {
     Company updateCompany(int id, Company updatedCompany);
 
     void deleteCompany(int id);
+    //double calculateTotalRevenue(Integer companyId);
 
     List<Company> getCompaniesWithOrdersByStatus(StatusType status);
 }

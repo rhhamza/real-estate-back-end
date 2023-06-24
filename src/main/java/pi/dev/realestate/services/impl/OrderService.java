@@ -3,15 +3,14 @@ package pi.dev.realestate.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pi.dev.realestate.entities.Company;
-import pi.dev.realestate.entities.Notification;
 import pi.dev.realestate.entities.Order;
-import pi.dev.realestate.entities.OrderReport;
-import pi.dev.realestate.repositories.NotificationRepository;
+
+import pi.dev.realestate.repositories.CompanyRepository;
+import pi.dev.realestate.repositories.OrderRepository;
+import pi.dev.realestate.services.EmailService;
 import pi.dev.realestate.services.interfaces.IOrderService;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,9 +21,6 @@ public class OrderService implements IOrderService {
     CompanyRepository companyRepository;
     @Autowired
     EmailService emailService;
-    @Autowired
-    NotificationRepository notificationRepository;
-    private NotificationService notificationService;
 
     @Autowired
     public OrderService(EmailService emailService) {
@@ -82,7 +78,7 @@ public class OrderService implements IOrderService {
         return savedOrder;
     }
 
-
+/*
     @Override
     public void sendNotificationBeforeEndDate(int days) {
         LocalDateTime currentDate = LocalDateTime.now();
@@ -105,14 +101,14 @@ public class OrderService implements IOrderService {
             notificationRepository.save(notification);
         }
     }
-
+*/
 
 
     @Override
     public List<Order> getOrdersByCompany(Integer companyId) {
         return orderRepository.findOrdersByCompanyId(companyId);
     }
-
+/*
     @Override
     public OrderReport generateOrderReport(Date startDate, Date endDate) {
         List<Order> orders = orderRepository.findByStartDateBetween(startDate, endDate);
@@ -148,7 +144,11 @@ public class OrderService implements IOrderService {
 
         return orderReport;
     }
-/*
+
+
+ */
+
+
     @Override
     public double calculateTotalRevenue(Integer companyId) {
         List<Order> orders = orderRepository.findOrdersByCompanyId(companyId);
@@ -157,5 +157,5 @@ public class OrderService implements IOrderService {
             totalRevenue += order.getPrice();
         }
         return totalRevenue;
-    }*/
+    }
 }
