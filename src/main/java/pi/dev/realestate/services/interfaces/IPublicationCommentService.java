@@ -8,7 +8,7 @@ public interface IPublicationCommentService {
     PublicationComment getPublicationCommentById(int id);
     List<PublicationComment> getAllPublicationComments();
     List<PublicationComment> getPublicationCommentsByPublicationId(int publicationId);
-    PublicationComment createPublicationComment(PublicationComment publicationComment);
+    PublicationComment createPublicationComment(PublicationComment publicationComment,Integer idUser, Integer idPublication);
     PublicationComment updatePublicationComment(int id, PublicationComment publicationComment);
     void deletePublicationComment(int id);
 }
