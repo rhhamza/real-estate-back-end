@@ -28,6 +28,6 @@ public class Calendar implements Serializable {
 
     private LocalDateTime endTime;
 
-    @OneToMany (mappedBy = "calendar", cascade = CascadeType.ALL)
-    private List<Appointment> appointments;
+    //@OneToMany (mappedBy = "calendar", cascade = CascadeType.ALL)
+   // private List<Appointment> appointments;
 }
