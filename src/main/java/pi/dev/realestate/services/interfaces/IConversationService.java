@@ -2,6 +2,7 @@ package pi.dev.realestate.services.interfaces;
 
 import pi.dev.realestate.entities.Company;
 import pi.dev.realestate.entities.Conversation;
+import pi.dev.realestate.entities.Message;
 import pi.dev.realestate.entities.UserEntity;
 
 import java.util.List;
@@ -14,5 +15,12 @@ public interface IConversationService {
 
     Optional<Conversation> getConversationByIdAndUser(Long conversationId, Company user);
     Conversation addParticipant(Long conversationId, UserEntity user);
+
+    Conversation updateConversation(Long conversationId, Message message);
+
+    Conversation getConversationbyId(Long id);
+
+    Optional<Conversation> getConversationByUserFirstNamAndLastName(String firstName, String lastName);
+    Optional<Conversation> getConversationByUserFirstNameOrLastName(String Name);
 
 }

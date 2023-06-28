@@ -18,4 +18,6 @@ public class Conversation {
     private String name;
     @ManyToMany(cascade = CascadeType.PERSIST)
     private List<UserEntity> participants;
+    @OneToMany(mappedBy = "conversation", cascade = CascadeType.PERSIST)
+    private List<Message> messages;
 }
