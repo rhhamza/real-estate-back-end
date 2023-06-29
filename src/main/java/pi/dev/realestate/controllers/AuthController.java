@@ -14,12 +14,14 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import pi.dev.realestate.entities.Company;
 import pi.dev.realestate.entities.DTO.AuthResponseDto;
 import pi.dev.realestate.entities.DTO.LoginDTO;
 
 import pi.dev.realestate.entities.Roles;
 import pi.dev.realestate.entities.StatusType;
 import pi.dev.realestate.entities.UserEntity;
+import pi.dev.realestate.repositories.CompanyRepository;
 import pi.dev.realestate.repositories.RolesRepository;
 import pi.dev.realestate.repositories.UserRepository;
 import pi.dev.realestate.security.JWTGenerator;
@@ -47,6 +49,8 @@ public class AuthController {
     AuthenticationManager authenticationManager;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    CompanyRepository companyRepository;
     @Autowired
     RolesRepository rolesRepository;
     @Autowired
@@ -95,9 +99,20 @@ public class AuthController {
         user.setPhone(userEntity.getPhone());
         //user.setStatus(StatusType.ACTIVE);
         user.setStatus(StatusType.INACTIVE);
+        user.setRoles(userEntity.getRoles());
+//        Roles roles = rolesRepository.findByName("client").get();
+//        user.setRoles(Collections.singletonList(roles));
+        if (userEntity.getRoles().stream().anyMatch(role -> role.getName().equals("company"))) {
+            Company company = new Company();
+            company.setName(user.getFirstname());
+            company.setEmail(user.getEmail());
+            company.setPhone(user.getPhone());
+            company.setStatus(StatusType.ACTIVE);
+            company.setAddress(user.getAddress());
+            company.setDescription(user.getDescreption());
+            companyRepository.save(company);
+        }
 
-        Roles roles = rolesRepository.findByName("client").get();
-        user.setRoles(Collections.singletonList(roles));
 
         userRepository.save(user);
         sendActivationEmail(user);

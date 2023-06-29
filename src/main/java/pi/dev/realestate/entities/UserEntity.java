@@ -22,7 +22,9 @@ public class UserEntity {
 
     private String firstname;
     private String lastname;
-    private String phone;
+    private int phone;
+    private String address;
+    private String descreption;
 
     @Enumerated(EnumType.STRING)
     private StatusType status;
