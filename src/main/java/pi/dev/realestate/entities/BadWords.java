@@ -1,31 +1,26 @@
 package pi.dev.realestate.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "publication_comments")
+@Table(name = "bad_words")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PublicationComment {
+public class BadWords {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String content;
+    private String word;
 
-    @ManyToOne
-    @JsonIgnore
-    private UserEntity user;
-
-    @ManyToOne
-    @JsonIgnore
-    private Publication publication;
 
     private Timestamp createdAt;
     private Timestamp updatedAt;
@@ -41,4 +36,6 @@ public class PublicationComment {
     protected void onUpdate() {
         updatedAt = new Timestamp(System.currentTimeMillis());
     }
+
+
 }

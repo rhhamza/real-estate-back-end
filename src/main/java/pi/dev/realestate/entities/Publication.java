@@ -1,5 +1,6 @@
 package pi.dev.realestate.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -22,17 +23,16 @@ public class Publication {
     private String title;
     private String content;
 
-    @Temporal(TemporalType.DATE)
-    private Date creationDate;
-
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JsonIgnore
     private UserEntity user;
 
     @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<PublicationComment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<PublicationReaction> reactions = new ArrayList<>();
 
     private Timestamp createdAt;

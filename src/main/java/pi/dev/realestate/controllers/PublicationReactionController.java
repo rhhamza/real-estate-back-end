@@ -5,9 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pi.dev.realestate.entities.PublicationReaction;
+import pi.dev.realestate.entities.ReactionType;
+import pi.dev.realestate.entities.UserEntity;
 import pi.dev.realestate.services.impl.PublicationReactionService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/publicationReactions")
@@ -34,9 +37,11 @@ public class PublicationReactionController {
         return new ResponseEntity<>(reactions, HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<PublicationReaction> createReaction(@RequestBody PublicationReaction reaction) {
-        PublicationReaction createdReaction = reactionService.createPublicationReaction(reaction);
+    @PostMapping("/add/{idUser}/{idPublication}")
+    public ResponseEntity<PublicationReaction> createReaction(@RequestBody PublicationReaction reaction ,
+                                                              @PathVariable("idUser") Integer idUser,
+                                                              @PathVariable("idPublication") Integer idPublication) {
+        PublicationReaction createdReaction = reactionService.createPublicationReaction(reaction , idUser, idPublication);
         return new ResponseEntity<>(createdReaction, HttpStatus.CREATED);
     }
 
@@ -54,4 +59,6 @@ public class PublicationReactionController {
         reactionService.deletePublicationReaction(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
 }

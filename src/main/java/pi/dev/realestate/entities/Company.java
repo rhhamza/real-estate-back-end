@@ -1,10 +1,14 @@
 package pi.dev.realestate.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import java.security.Timestamp;
+import javax.persistence.EnumType;
+import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -14,9 +18,9 @@ import java.util.Date;
 @NoArgsConstructor
 public class Company {
 
-    @javax.persistence.Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id;
+    private Integer id;
     private String name;
     private String address;
     private String description;
@@ -24,6 +28,24 @@ public class Company {
     private String email;
     private String logo;
     private StatusType status;
-    private Timestamp timestamp;
+    @Column(nullable = false, updatable = false)
+    Timestamp createdAt;
+    @Column(nullable = false)
+    Timestamp updatedAt;
 
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Timestamp(System.currentTimeMillis());
+        updatedAt = new Timestamp(System.currentTimeMillis());
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = new Timestamp(System.currentTimeMillis());
+    }
+
+    @JsonIgnore
+    @OneToMany(cascade = CascadeType.ALL, mappedBy="company")
+    private Set<Order> orders = new HashSet<>();
 }

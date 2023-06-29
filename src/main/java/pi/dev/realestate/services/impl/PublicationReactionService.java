@@ -1,17 +1,30 @@
 package pi.dev.realestate.services.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pi.dev.realestate.entities.Publication;
 import pi.dev.realestate.entities.PublicationReaction;
+import pi.dev.realestate.entities.ReactionType;
+import pi.dev.realestate.entities.UserEntity;
 import pi.dev.realestate.repositories.PublicationReactionRepository;
+import pi.dev.realestate.repositories.PublicationRepository;
+import pi.dev.realestate.repositories.UserRepository;
 import pi.dev.realestate.services.interfaces.IPublicationReactionService;
-import pi.dev.realestate.services.interfaces.IPublicationService;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class PublicationReactionService implements IPublicationReactionService {
+
+    @Autowired
+    UserRepository userRepository;
+    @Autowired
+    PublicationRepository publicationRepository;
     private final PublicationReactionRepository publicationReactionRepository;
 
     @Autowired
@@ -38,7 +51,11 @@ public class PublicationReactionService implements IPublicationReactionService {
     }
 
     @Override
-    public PublicationReaction createPublicationReaction(PublicationReaction publicationReaction) {
+    public PublicationReaction createPublicationReaction(PublicationReaction publicationReaction,  Integer idUser, Integer idPublication) {
+        UserEntity user = userRepository.findById(idUser).orElse(null);
+        Publication publication = publicationRepository.findById(idPublication).orElse(null);
+        publicationReaction.setUser(user);
+        publicationReaction.setPublication(publication);
         return publicationReactionRepository.save(publicationReaction);
     }
 
@@ -59,4 +76,7 @@ public class PublicationReactionService implements IPublicationReactionService {
     public void deletePublicationReaction(int id) {
         publicationReactionRepository.deleteById(id);
     }
+
+
+
 }

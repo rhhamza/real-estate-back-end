@@ -1,5 +1,6 @@
 package pi.dev.realestate.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,11 +22,11 @@ public class PublicationReaction {
     private ReactionType reaction;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JsonIgnore
     private UserEntity user;
 
     @ManyToOne
-    @JoinColumn(name = "publication_id")
+    @JsonIgnore
     private Publication publication;
 
     private Timestamp createdAt;

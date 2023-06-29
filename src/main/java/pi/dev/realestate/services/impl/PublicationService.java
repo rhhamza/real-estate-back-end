@@ -1,17 +1,25 @@
 package pi.dev.realestate.services.impl;
 
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pi.dev.realestate.entities.Publication;
+import pi.dev.realestate.entities.*;
+import pi.dev.realestate.entities.DTO.CommentDTO;
 import pi.dev.realestate.repositories.PublicationRepository;
+import pi.dev.realestate.repositories.UserRepository;
 import pi.dev.realestate.services.interfaces.IPublicationService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-
+@Slf4j
 @Service
+
 public class PublicationService implements IPublicationService {
+    @Autowired
+    UserRepository userRepository;
     private final PublicationRepository publicationRepository;
 
     @Autowired
@@ -38,9 +46,12 @@ public class PublicationService implements IPublicationService {
     }
 
     @Override
-    public Publication createPublication(Publication publication) {
-        return publicationRepository.save(publication);
+    public Publication createPublication(Publication publication, Integer idUser) {
+        UserEntity user = userRepository.findById(idUser).orElse(null);
+        publication.setUser(user);
+       return publicationRepository.save(publication);
     }
+
 
     @Override
     public Publication updatePublication(int id, Publication publication) {
@@ -58,6 +69,56 @@ public class PublicationService implements IPublicationService {
     @Override
     public void deletePublication(int id) {
         publicationRepository.deleteById(id);
+    }
+
+
+    @Override
+    public List<UserEntity> getUsersByReactionType(int publicationId, ReactionType reactionType) {
+        Publication publication = publicationRepository.findById(publicationId)
+                .orElseThrow(() -> new IllegalArgumentException("Publication not found"));
+
+        List<UserEntity> users = new ArrayList<>();
+        for (PublicationReaction reaction : publication.getReactions()) {
+            if (reaction.getReaction() == reactionType) {
+                users.add(reaction.getUser());
+            }
+        }
+        return users;
+    }
+
+    @Override
+    public int getReactionCountByType(int publicationId, ReactionType reactionType) {
+        Publication publication = publicationRepository.findById(publicationId)
+                .orElseThrow(() -> new IllegalArgumentException("Publication not found"));
+
+        return (int) publication.getReactions().stream()
+                .filter(reaction -> reaction.getReaction() == reactionType)
+                .count();
+    }
+
+    @Override
+    public List<PublicationComment> getAllPublicationComments(int publicationId) {
+        Publication publication = publicationRepository.findById(publicationId)
+                .orElseThrow(() -> new IllegalArgumentException("Publication not found"));
+
+        return publication.getComments();
+    }
+
+    @Override
+    public List<CommentDTO> getAllPublicationCommentsWithUser(int publicationId) {
+        Publication publication = publicationRepository.findById(publicationId)
+                .orElseThrow(() -> new IllegalArgumentException("Publication not found"));
+
+        List<CommentDTO> commentDtos = new ArrayList<>();
+        List<PublicationComment> comments = publication.getComments();
+
+        for (PublicationComment comment : comments) {
+            UserEntity user = comment.getUser();
+            CommentDTO commentDto = new CommentDTO(comment.getId(), comment.getContent(), user.getFirstname());
+            commentDtos.add(commentDto);
+        }
+
+        return commentDtos;
     }
 
 }
