@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import pi.dev.realestate.entities.Company;
 import pi.dev.realestate.entities.Order;
 import pi.dev.realestate.entities.StatusType;
@@ -50,7 +51,7 @@ public class CompanyService implements ICoompanyService {
             existingCompany.setAddress(updatedCompany.getAddress());
             existingCompany.setPhone(updatedCompany.getPhone());
             existingCompany.setEmail(updatedCompany.getEmail());
-            existingCompany.setLogo(updatedCompany.getLogo());
+            existingCompany.setImage(updatedCompany.getImage());
             existingCompany.setStatus(updatedCompany.getStatus());
             existingCompany.setDescription(updatedCompany.getDescription());
             existingCompany.setUpdatedAt(new Timestamp(System.currentTimeMillis()));

@@ -2,25 +2,49 @@ package pi.dev.realestate.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pi.dev.realestate.entities.Company;
+import pi.dev.realestate.entities.CompanyImage;
+import pi.dev.realestate.services.interfaces.ICompanyImageService;
 import pi.dev.realestate.services.interfaces.ICoompanyService;
 
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/company")
+@RequestMapping("company")
 public class CompanyController {
 
     @Autowired
     ICoompanyService iCompanyService;
 
-    @PostMapping("/add")
-    public ResponseEntity<Object> addCompany(@RequestBody Company company) {
-        Company addedCompany = iCompanyService.addCompany(company);
-        return new ResponseEntity<>(addedCompany, HttpStatus.CREATED);
+    @Autowired
+    ICompanyImageService iCompanyImageService;
+
+    /*
+    @PostMapping(value = "/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public Company addCompany(@RequestPart("company") Company company,
+                              @RequestPart("imageFile") MultipartFile file) {
+        try {
+            CompanyImage image = iCompanyImageService.uploadImage(file);
+            company.setImage(image);
+            return iCompanyService.addCompany(company);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+*/
+    @PostMapping(value = "/add")
+    public Company addCompany(@RequestBody Company company) {
+
+            return iCompanyService.addCompany(company);
+
     }
 
     @GetMapping("/all")
