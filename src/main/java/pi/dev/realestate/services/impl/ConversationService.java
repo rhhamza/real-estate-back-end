@@ -26,7 +26,7 @@ public class ConversationService implements IConversationService {
 
     @Override
     public List<Conversation> getConversationsByUser(int company) {
-        return conversationRepository.findByParticipantsId(company);
+        return conversationRepository.findByParticipantsID(company);
     }
 
     @Override
@@ -64,10 +64,15 @@ public class ConversationService implements IConversationService {
     }
     @Override
     public Optional<Conversation> getConversationByUserFirstNamAndLastName(String firstName, String lastName) {
-        return conversationRepository.findByParticipantsFirstNameAndParticipantsLastName(firstName, lastName);
+        return conversationRepository.findByParticipantsFirstnameAndParticipantsLastname(firstName, lastName);
     }
     @Override
-    public Optional<Conversation> getConversationByUserFirstNameOrLastName(String name) {
-        return conversationRepository.findByParticipantsFirstNameOrParticipantsLastName(name);
+    public Optional<Conversation> getConversationByUserFirstNameOrLastName(String firstName, String lastName) {
+        return conversationRepository.findByParticipantsFirstnameOrParticipantsLastname(firstName, lastName);
+    }
+
+    @Override
+    public List<Conversation> getConversations() {
+        return conversationRepository.findAll();
     }
 }

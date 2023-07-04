@@ -2,7 +2,6 @@ package pi.dev.realestate.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pi.dev.realestate.entities.Company;
 import pi.dev.realestate.entities.Notification;
 import pi.dev.realestate.exceptions.NotificationNotFoundException;
 import pi.dev.realestate.repositories.NotificationRepository;
@@ -23,12 +22,12 @@ public class NotificationService implements INotificationService {
 
     @Override
     public List<Notification> getNotificationsByRecipient(int recipient) {
-        return notificationRepository.findByRecipientIdOrderByTimestamp(recipient);
+        return notificationRepository.findByRecipientIDOrderByTimestamp(recipient);
     }
 
     @Override
     public long countUnreadNotifications(int recipient) {
-        return notificationRepository.countByRecipientIdAndIsRead(recipient, false);
+        return notificationRepository.countByRecipientIDAndIsRead(recipient, false);
     }
 
     @Override

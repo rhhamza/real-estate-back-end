@@ -68,10 +68,10 @@ public class ConversationController {
     }
     @GetMapping("/search")
     public ResponseEntity<?> getConversationByUserFirstNameOrLastName(
-            @RequestParam String name
+            @RequestParam String firstName, @RequestParam String lastName
     ) {
         try {
-            Optional<Conversation> conversation = iconversationService.getConversationByUserFirstNameOrLastName(name);
+            Optional<Conversation> conversation = iconversationService.getConversationByUserFirstNameOrLastName(firstName, lastName);
 
             if (conversation.isPresent()) {
                 return ResponseEntity.ok(conversation.get());
@@ -81,6 +81,11 @@ public class ConversationController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving conversation");
         }
+    }
+
+    @GetMapping("/")
+    public List<Conversation> getConversations(){
+        return iconversationService.getConversations();
     }
 }
 
