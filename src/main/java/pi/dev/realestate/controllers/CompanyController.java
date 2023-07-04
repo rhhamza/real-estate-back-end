@@ -11,7 +11,7 @@ import pi.dev.realestate.services.interfaces.ICoompanyService;
 import java.util.List;
 
 @RestController
-@RequestMapping("company")
+@RequestMapping("/company")
 public class CompanyController {
 
     @Autowired

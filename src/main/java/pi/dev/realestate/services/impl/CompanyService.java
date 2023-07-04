@@ -11,7 +11,6 @@ import pi.dev.realestate.repositories.CompanyRepository;
 import pi.dev.realestate.repositories.OrderRepository;
 import pi.dev.realestate.repositories.RolesRepository;
 import pi.dev.realestate.services.interfaces.ICoompanyService;
-
 import javax.management.relation.Role;
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -70,7 +69,6 @@ public class CompanyService implements ICoompanyService {
     public List<Company> getCompaniesWithOrdersByStatus(StatusType status) {
         return companyRepository.findCompaniesWithOrdersByStatus(status);
     }
-
 
 
 }

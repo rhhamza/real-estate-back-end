@@ -1,5 +1,8 @@
 package pi.dev.realestate.services.interfaces;
 
+import pi.dev.realestate.entities.Order;
+
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IOrderService {

@@ -1,26 +1,29 @@
 package pi.dev.realestate.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.persistence.EnumType;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "orders")
 @Getter
 @Setter
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;
-    @Temporal(TemporalType.DATE)
-    private Date startDate;
-    @Temporal(TemporalType.DATE)
-    private Date endDate;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
     private StatusType status;
     private int price;
     @Column(nullable = false, updatable = false)
@@ -39,5 +42,8 @@ public class Order {
 
     @ManyToOne
     Company company;
+
+
+
 }
 
