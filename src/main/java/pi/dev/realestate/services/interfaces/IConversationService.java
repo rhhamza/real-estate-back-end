@@ -21,6 +21,7 @@ public interface IConversationService {
     Conversation getConversationbyId(Long id);
 
     Optional<Conversation> getConversationByUserFirstNamAndLastName(String firstName, String lastName);
-    Optional<Conversation> getConversationByUserFirstNameOrLastName(String Name);
+    Optional<Conversation> getConversationByUserFirstNameOrLastName(String firstName, String lastName);
 
+    List<Conversation> getConversations();
 }
