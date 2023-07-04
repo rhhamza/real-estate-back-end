@@ -1,5 +1,6 @@
 package pi.dev.realestate.services.interfaces;
 
+import org.springframework.web.multipart.MultipartFile;
 import pi.dev.realestate.entities.Company;
 import pi.dev.realestate.entities.StatusType;
 

@@ -26,8 +26,8 @@ public class Company {
     private String description;
     private int phone;
     private String email;
-    private String logo;
     private StatusType status;
+
     @Column(nullable = false, updatable = false)
     Timestamp createdAt;
     @Column(nullable = false)
@@ -48,4 +48,7 @@ public class Company {
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy="company")
     private Set<Order> orders = new HashSet<>();
+
+    @OneToOne(mappedBy="company")
+    private CompanyImage image ;
 }
