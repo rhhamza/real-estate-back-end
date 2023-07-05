@@ -1,9 +1,14 @@
 package pi.dev.realestate.security;
 
-import org.hibernate.cfg.Environment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.web.access.channel.ChannelProcessingFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+import pi.dev.realestate.controllers.CustomCorsFilter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,6 +38,7 @@ public class SecurityConfig {
 
     private JwtAuthEntryPoint authEntryPoint;
     private CustomUserDetailsService userDetailsService;
+
     private static List<String> clients = Arrays.asList("google", "facebook");
     @Value("${spring.security.oauth2.client.registration.google.clientId}")
     private String googleClientId;
@@ -47,10 +53,12 @@ public class SecurityConfig {
     private String googleScopeProfile;
 
 
+
     @Autowired
     public SecurityConfig(CustomUserDetailsService userDetailsService, JwtAuthEntryPoint authEntryPoint) {
         this.userDetailsService = userDetailsService;
         this.authEntryPoint = authEntryPoint;
+
     }
 
     @Bean
@@ -76,6 +84,7 @@ public class SecurityConfig {
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
+
     @Bean
     public OAuth2AuthorizedClientService authorizedClientService() {
 
@@ -123,6 +132,12 @@ public class SecurityConfig {
 
         return null;
     }
+
+    protected void configure(HttpSecurity http) throws Exception {
+        http.cors(); // Enable CORS globally
+        // Additional security configurations
+    }
+
 }
 
 
