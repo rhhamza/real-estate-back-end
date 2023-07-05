@@ -68,10 +68,11 @@ public class ConversationController {
     }
     @GetMapping("/search")
     public ResponseEntity<?> getConversationByUserFirstNameOrLastName(
-            @RequestParam String name
+            @RequestParam String name,
+            @RequestParam String lastname
     ) {
         try {
-            Optional<Conversation> conversation = iconversationService.getConversationByUserFirstNameOrLastName(name);
+            Optional<Conversation> conversation = iconversationService.getConversationByUserFirstNameOrLastName(name, lastname);
 
             if (conversation.isPresent()) {
                 return ResponseEntity.ok(conversation.get());
