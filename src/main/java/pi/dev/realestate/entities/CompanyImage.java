@@ -28,5 +28,4 @@ public class CompanyImage {
     @OneToOne
     Company company;
 
-
 }
