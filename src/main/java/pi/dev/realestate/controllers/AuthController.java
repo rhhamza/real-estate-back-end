@@ -97,11 +97,9 @@ public class AuthController {
         user.setEmail(userEntity.getEmail());
         user.setPassword(passwordEncoder.encode((userEntity.getPassword())));
         user.setPhone(userEntity.getPhone());
-        //user.setStatus(StatusType.ACTIVE);
         user.setStatus(StatusType.INACTIVE);
         user.setRoles(userEntity.getRoles());
-//        Roles roles = rolesRepository.findByName("client").get();
-//        user.setRoles(Collections.singletonList(roles));
+
         if (userEntity.getRoles().stream().anyMatch(role -> role.getName().equals("company"))) {
             Company company = new Company();
             company.setName(user.getFirstname());
@@ -130,7 +128,7 @@ public class AuthController {
         // You will need to provide the necessary configuration (SMTP server details, email content, etc.)
         // Here's a simplified example using JavaMail API:
 
-        String activationLink = "https://example.com/activate?userId=" + user.getID();
+        String activationLink = "http://localhost:4200/auth/active-account?userId=" + user.getID();
         String subject = "Activate your account";
         String body = "Dear " + user.getFirstname() + ",\n\n"
                 + "Thank you for registering with our application! Please click the link below to activate your account:\n"
