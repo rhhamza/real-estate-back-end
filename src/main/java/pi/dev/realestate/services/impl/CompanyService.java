@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import pi.dev.realestate.entities.Company;
 import pi.dev.realestate.entities.Order;
 import pi.dev.realestate.entities.StatusType;
@@ -11,7 +12,6 @@ import pi.dev.realestate.repositories.CompanyRepository;
 import pi.dev.realestate.repositories.OrderRepository;
 import pi.dev.realestate.repositories.RolesRepository;
 import pi.dev.realestate.services.interfaces.ICoompanyService;
-
 import javax.management.relation.Role;
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -51,7 +51,7 @@ public class CompanyService implements ICoompanyService {
             existingCompany.setAddress(updatedCompany.getAddress());
             existingCompany.setPhone(updatedCompany.getPhone());
             existingCompany.setEmail(updatedCompany.getEmail());
-            existingCompany.setLogo(updatedCompany.getLogo());
+            existingCompany.setImage(updatedCompany.getImage());
             existingCompany.setStatus(updatedCompany.getStatus());
             existingCompany.setDescription(updatedCompany.getDescription());
             existingCompany.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
@@ -70,7 +70,6 @@ public class CompanyService implements ICoompanyService {
     public List<Company> getCompaniesWithOrdersByStatus(StatusType status) {
         return companyRepository.findCompaniesWithOrdersByStatus(status);
     }
-
 
 
 }
