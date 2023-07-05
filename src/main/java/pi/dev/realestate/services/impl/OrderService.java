@@ -1,95 +1,95 @@
-// package pi.dev.realestate.services.impl;
+package pi.dev.realestate.services.impl;
 
-// import lombok.AllArgsConstructor;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.mail.SimpleMailMessage;
-// import org.springframework.mail.javamail.JavaMailSender;
-// import org.springframework.scheduling.annotation.Scheduled;
-// import org.springframework.stereotype.Service;
-// import pi.dev.realestate.entities.Company;
-// import pi.dev.realestate.entities.Order;
-// import pi.dev.realestate.entities.StatusType;
-// import pi.dev.realestate.repositories.CompanyRepository;
-// import pi.dev.realestate.repositories.OrderRepository;
-// import pi.dev.realestate.services.interfaces.IOrderService;
+import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+import pi.dev.realestate.entities.Company;
+import pi.dev.realestate.entities.Order;
+import pi.dev.realestate.entities.StatusType;
+import pi.dev.realestate.repositories.CompanyRepository;
+import pi.dev.realestate.repositories.OrderRepository;
+import pi.dev.realestate.services.interfaces.IOrderService;
 
-// import java.time.LocalDate;
-// import java.util.Date;
-// import java.util.List;
-// import java.util.stream.Collectors;
-// import java.time.temporal.*;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.time.temporal.*;
 
 
-// import java.sql.Timestamp;
+import java.sql.Timestamp;
 
-// @AllArgsConstructor
-// @Service
-// public class OrderService implements IOrderService {
-//    @Autowired
-//    OrderRepository orderRepository;
-//    @Autowired
-//    CompanyRepository companyRepository;
-//    @Autowired
-//    EmailService emailService;
+@AllArgsConstructor
+@Service
+public class OrderService implements IOrderService {
+   @Autowired
+   OrderRepository orderRepository;
+   @Autowired
+   CompanyRepository companyRepository;
+   @Autowired
+   EmailService emailService;
 //    @Autowired
 //    NotificationRepository notificationRepository;
 //    private NotificationService notificationService;
 
-//    @Autowired
-//    public OrderService(EmailService emailService) {
-//        this.emailService = emailService;
-//    }
+   @Autowired
+   public OrderService(EmailService emailService) {
+       this.emailService = emailService;
+   }
 
-//    @Override
-//    public Order addOrder(Order order){
-//        return orderRepository.save(order);
-//    }
-//    @Override
-//    public List<Order> getAllOrders(){
-//        return orderRepository.findAll();
-//    }
-//    @Override
-//    public Order getOrder(int id){
-//        return orderRepository.findById(id).orElse(null);
-//    }
+   @Override
+   public Order addOrder(Order order){
+       return orderRepository.save(order);
+   }
+   @Override
+   public List<Order> getAllOrders(){
+       return orderRepository.findAll();
+   }
+   @Override
+   public Order getOrder(int id){
+       return orderRepository.findById(id).orElse(null);
+   }
 
-//    @Override
-//    public Order updateOrder(int id, Order updatedOrder) {
-//        Order existingOrder = orderRepository.findById(id).orElse(null);
-//        if (existingOrder != null) {
-//            existingOrder.setStartDate(updatedOrder.getStartDate());
-//            existingOrder.setEndDate(updatedOrder.getEndDate());
-//            existingOrder.setStatus(updatedOrder.getStatus());
-//            existingOrder.setPrice(updatedOrder.getPrice());
-//            existingOrder.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
-//            orderRepository.save(existingOrder);
+   @Override
+   public Order updateOrder(int id, Order updatedOrder) {
+       Order existingOrder = orderRepository.findById(id).orElse(null);
+       if (existingOrder != null) {
+           existingOrder.setStartDate(updatedOrder.getStartDate());
+           existingOrder.setEndDate(updatedOrder.getEndDate());
+           existingOrder.setStatus(updatedOrder.getStatus());
+           existingOrder.setPrice(updatedOrder.getPrice());
+           existingOrder.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+           orderRepository.save(existingOrder);
 
-//        }
-//        return existingOrder;
-//    }
+       }
+       return existingOrder;
+   }
 
-//    @Override
-//    public void deleteOrder(int id) {
-//        orderRepository.deleteById(id);
-//    }
+   @Override
+   public void deleteOrder(int id) {
+       orderRepository.deleteById(id);
+   }
 
 
 
-//    @Override
-//    public Order addOrderAndAssignToCompany (Order order, int companyId)
-//    {
-//        Order savedOrder = orderRepository.save(order);
-//        Company company = companyRepository.findById(companyId).orElse(null);
-//        if (company != null) {
-//            savedOrder.setCompany(company);
-//            orderRepository.save(savedOrder);
+   @Override
+   public Order addOrderAndAssignToCompany (Order order, int companyId)
+   {
+       Order savedOrder = orderRepository.save(order);
+       Company company = companyRepository.findById(companyId).orElse(null);
+       if (company != null) {
+           savedOrder.setCompany(company);
+           orderRepository.save(savedOrder);
 
-//            // Send email to the company
-//            emailService.sendOrderConfirmationEmail(company, savedOrder);
-//        }
+           // Send email to the company
+           emailService.sendOrderConfirmationEmail(company, savedOrder);
+       }
 
-//        return savedOrder;
-//    }
+       return savedOrder;
+   }
 
 
 //    @Override
@@ -117,10 +117,10 @@
 
 
 
-//    @Override
-//    public List<Order> getOrdersByCompany(Integer companyId) {
-//        return orderRepository.findOrdersByCompanyId(companyId);
-//    }
+   @Override
+   public List<Order> getOrdersByCompany(Integer companyId) {
+       return orderRepository.findOrdersByCompanyId(companyId);
+   }
 
 //    @Override
 //    public OrderReport generateOrderReport(Date startDate, Date endDate) {
@@ -157,14 +157,14 @@
 
 //        return orderReport;
 //    }
-// /*
-//    @Override
-//    public double calculateTotalRevenue(Integer companyId) {
-//        List<Order> orders = orderRepository.findOrdersByCompanyId(companyId);
-//        double totalRevenue = 0.0;
-//        for (Order order : orders) {
-//            totalRevenue += order.getPrice();
-//        }
-//        return totalRevenue;
-//    }*/
-// }
+/*
+   @Override
+   public double calculateTotalRevenue(Integer companyId) {
+       List<Order> orders = orderRepository.findOrdersByCompanyId(companyId);
+       double totalRevenue = 0.0;
+       for (Order order : orders) {
+           totalRevenue += order.getPrice();
+       }
+       return totalRevenue;
+   }*/
+}
