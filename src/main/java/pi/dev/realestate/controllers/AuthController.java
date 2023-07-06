@@ -19,7 +19,6 @@ import pi.dev.realestate.entities.DTO.AuthResponseDto;
 import pi.dev.realestate.entities.DTO.LoginDTO;
 
 import pi.dev.realestate.entities.DTO.RestePasswordDTO;
-import pi.dev.realestate.entities.Roles;
 import pi.dev.realestate.entities.StatusType;
 import pi.dev.realestate.entities.UserEntity;
 import pi.dev.realestate.repositories.CompanyRepository;
@@ -36,8 +35,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @AllArgsConstructor
@@ -73,6 +70,8 @@ public class AuthController {
     @PostMapping("login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDTO loginDto) {
         Optional<UserEntity> user = userRepository.findByEmail(loginDto.getEmail());
+
+
         if (user == null || user.get().getStatus() != StatusType.ACTIVE) {
             // User not found or user's status is not active
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -83,7 +82,9 @@ public class AuthController {
                         loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);
-        return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
+
+
+        return new ResponseEntity<>(new AuthResponseDto(token,user.get().getID()), HttpStatus.OK);
     }
 
     @PostMapping("registerclient")
@@ -184,14 +185,14 @@ public class AuthController {
 
             }
     @PostMapping("/reset-password")
-    public ResponseEntity<String> resetPassword(@RequestBody RestePasswordDTO email) {
+    public ResponseEntity<String> resetPassword(@RequestBody RestePasswordDTO restePasswordDTO) {
 
-        Optional<UserEntity> user = userRepository.findByEmail(email.toString());
+        Optional<UserEntity> user = userRepository.findByEmail(restePasswordDTO.getEmail());
         if (user.isPresent()) {
             sendPasswordResetEmail(user.get());
             return new ResponseEntity<>("Password reset email sent!", HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User not found", HttpStatus.NO_CONTENT);
         }
     }
 
