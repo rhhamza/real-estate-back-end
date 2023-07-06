@@ -14,6 +14,7 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer> {
 
+
     List<Order> findOrdersByCompanyId(Integer companyId);
 
     List<Order> findByStartDateBetween(Date startDate, Date endDate);

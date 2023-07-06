@@ -20,7 +20,11 @@ public interface IOrderService {
 
    // void sendNotificationBeforeEndDate(int days);
 
-   List<Order> getOrdersByCompany(Integer companyId);
+    Order acceptOrder(int id);
+
+    Order rejectOrder(int id);
+
+    List<Order> getOrdersByCompany(Integer companyId);
 
    //OrderReport generateOrderReport(Date startDate, Date endDate);
 
