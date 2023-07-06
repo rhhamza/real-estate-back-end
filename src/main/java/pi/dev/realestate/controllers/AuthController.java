@@ -18,6 +18,7 @@ import pi.dev.realestate.entities.Company;
 import pi.dev.realestate.entities.DTO.AuthResponseDto;
 import pi.dev.realestate.entities.DTO.LoginDTO;
 
+import pi.dev.realestate.entities.DTO.RestePasswordDTO;
 import pi.dev.realestate.entities.Roles;
 import pi.dev.realestate.entities.StatusType;
 import pi.dev.realestate.entities.UserEntity;
@@ -182,5 +183,52 @@ public class AuthController {
         return "oauth_login";
 
             }
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody RestePasswordDTO email) {
+
+        Optional<UserEntity> user = userRepository.findByEmail(email.toString());
+        if (user.isPresent()) {
+            sendPasswordResetEmail(user.get());
+            return new ResponseEntity<>("Password reset email sent!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    private void sendPasswordResetEmail(UserEntity user) {
+
+        String resetLink = "http://localhost:4200/auth/reset-password?userId=" + user.getID();
+        String subject = "Reset your password";
+        String body = "Dear " + user.getFirstname() + ",\n\n"
+                + "You have requested to reset your password. Please click the link below to reset your password:\n"
+                + resetLink + "\n\n"
+                + "If you did not initiate this request, please ignore this email.\n\n"
+                + "Best regards,\n"
+                + "Your Application Team";
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("hamza.melki.isetcom@gmail.com", "ahbklusopnzwbduy");
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("hamza.melki.isetcom@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
+            message.setSubject(subject);
+            message.setText(body);
+            Transport.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            // Handle the exception appropriately
+        }
+    }
 
 }
