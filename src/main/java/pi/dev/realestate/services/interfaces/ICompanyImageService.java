@@ -19,10 +19,9 @@ public interface ICompanyImageService {
     void deleteCompanyImage(int id);
     public CompanyImage uploadImage(MultipartFile file) throws IOException;
     */
+    CompanyImage uploadImage(MultipartFile file, int id) throws IOException;
 
-    CompanyImage uploadImage(String name, String type, MultipartFile file, int companyId) throws IOException;
-
-    Optional<CompanyImage> getImageById(Long id);
+    CompanyImage getImageById(int id);
 
     void deleteImageById(Long id);
 }

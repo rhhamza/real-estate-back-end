@@ -63,6 +63,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import pi.dev.realestate.config.FilenameUtils;
 import pi.dev.realestate.entities.Company;
 import pi.dev.realestate.entities.CompanyImage;
 import pi.dev.realestate.repositories.CompanyImageRepository;
@@ -87,24 +88,28 @@ public class CompanyImageService implements ICompanyImageService {
         this.companyImageRepository = companyImageRepository;
     }
 
-    public CompanyImage uploadImage(String name, String type, MultipartFile file, int companyId) throws IOException {
-        byte[] picByte = file.getBytes();
-        CompanyImage companyImage = new CompanyImage(name, type, picByte);
-        Company company = companyRepository.findById(companyId).orElse(null);
+    @Override
+    public CompanyImage uploadImage(MultipartFile file, int id) throws IOException {
+        CompanyImage companyImage = new CompanyImage();
+        companyImage.setName(file.getOriginalFilename());
+        companyImage.setType(file.getContentType());
+        companyImage.setPicByte(FilenameUtils.compressImage(file.getBytes()));
+        Company company = companyRepository.findById(id).orElse(null);
         if (company != null) {
             companyImage.setCompany(company);
+            companyImageRepository.save(companyImage);
+
+
         }
-            return companyImageRepository.save(companyImage);
-
-
-
+        return companyImage;
     }
 
-    public Optional<CompanyImage> getImageById(Long id) {
-        return companyImageRepository.findById(id);
+    public CompanyImage getImageById(int id) {
+        return companyImageRepository.findCompanyImageByCompanyId(id);
     }
 
     public void deleteImageById(Long id) {
         companyImageRepository.deleteById(id);
     }
+
 }
