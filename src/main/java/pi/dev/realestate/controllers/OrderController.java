@@ -6,9 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pi.dev.realestate.entities.Order;
 import pi.dev.realestate.services.interfaces.IOrderService;
-
-import javax.annotation.PostConstruct;
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController

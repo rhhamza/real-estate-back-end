@@ -5,12 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pi.dev.realestate.entities.PublicationReaction;
-import pi.dev.realestate.entities.ReactionType;
-import pi.dev.realestate.entities.UserEntity;
 import pi.dev.realestate.services.impl.PublicationReactionService;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/publicationReactions")
@@ -60,5 +57,14 @@ public class PublicationReactionController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
+    @GetMapping("/user/{userId}/publication/{publicationId}")
+    public ResponseEntity<PublicationReaction> getReactionByUserAndPublication(
+            @PathVariable("userId") Integer userId,
+            @PathVariable("publicationId") Integer publicationId) {
+        PublicationReaction reaction = reactionService.getReactionByUserAndPublication(userId, publicationId);
+        if (reaction != null) {
+            return new ResponseEntity<>(reaction, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 }

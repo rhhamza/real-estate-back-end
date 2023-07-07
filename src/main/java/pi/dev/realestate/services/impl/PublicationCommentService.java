@@ -14,7 +14,6 @@ import pi.dev.realestate.repositories.UserRepository;
 import pi.dev.realestate.services.interfaces.IPublicationCommentService;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,12 +26,10 @@ public class PublicationCommentService implements IPublicationCommentService {
     PublicationRepository publicationRepository;
     @Autowired
     BadWordsRepository badWordsRepository;
-    private final PublicationCommentRepository publicationCommentRepository;
-
     @Autowired
-    public PublicationCommentService(PublicationCommentRepository publicationCommentRepository) {
-        this.publicationCommentRepository = publicationCommentRepository;
-    }
+   PublicationCommentRepository publicationCommentRepository;
+
+
 
     @Override
     public PublicationComment getPublicationCommentById(int id) {

@@ -14,12 +14,10 @@ import java.util.Optional;
 @Service
 public class BadWordsService implements IBadWordsService {
 
-    private final BadWordsRepository badWordsRepository;
-
     @Autowired
-    public BadWordsService(BadWordsRepository badWordsRepository) {
-        this.badWordsRepository = badWordsRepository;
-    }
+    BadWordsRepository badWordsRepository;
+
+
 
     @Override
     public BadWords getBadWordsById(int id) {
