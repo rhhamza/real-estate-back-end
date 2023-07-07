@@ -108,6 +108,7 @@ public class AuthController {
 
         if (userEntity.getRoles().stream().anyMatch(role -> role.getName().equals("company"))) {
             Company company = new Company();
+            company.setId(user.getID());
             company.setName(user.getFirstname());
             company.setEmail(user.getEmail());
             company.setPhone(user.getPhone());
