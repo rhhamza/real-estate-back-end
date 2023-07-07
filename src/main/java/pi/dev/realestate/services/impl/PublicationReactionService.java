@@ -77,6 +77,21 @@ public class PublicationReactionService implements IPublicationReactionService {
         publicationReactionRepository.deleteById(id);
     }
 
+    @Override
+    public PublicationReaction getReactionByUserAndPublication(Integer userId, Integer publicationId) {
+        UserEntity user = userRepository.findById(userId).orElse(null);
+        Publication publication = publicationRepository.findById(publicationId).orElse(null);
+
+        if (user != null && publication != null) {
+            PublicationReaction reaction = publicationReactionRepository.findByUserAndPublication(user, publication);
+            if (reaction != null) {
+                reaction.getUser().setID(userId); // Set the userId in the returned reaction
+            }
+            return reaction;
+        }
+
+        return null;
+    }
 
 
 }
