@@ -86,7 +86,11 @@ public class AuthController {
 
         return new ResponseEntity<>(new AuthResponseDto(token,user.get().getID()), HttpStatus.OK);
     }
-
+    @GetMapping("allUsers")
+    public ResponseEntity<List<UserEntity>>getAll(){
+        List<UserEntity> users = userRepository.findAll();
+        return new ResponseEntity<>(users,HttpStatus.OK);
+    }
     @PostMapping("registerclient")
     public ResponseEntity<String> register(@RequestBody UserEntity userEntity) {
         if (userRepository.existsByEmail(userEntity.getEmail())) {
@@ -107,7 +111,7 @@ public class AuthController {
             company.setName(user.getFirstname());
             company.setEmail(user.getEmail());
             company.setPhone(user.getPhone());
-            company.setStatus(StatusType.ACTIVE);
+            company.setStatus(StatusType.INACTIVE);
             company.setAddress(user.getAddress());
             company.setDescription(user.getDescreption());
             companyRepository.save(company);
@@ -231,5 +235,6 @@ public class AuthController {
             // Handle the exception appropriately
         }
     }
+
 
 }
