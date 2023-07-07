@@ -2,7 +2,9 @@ package pi.dev.realestate.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pi.dev.realestate.entities.PropertyOffer;
+import pi.dev.realestate.entities.UserEntity;
 import pi.dev.realestate.repositories.PropertyOfferRepository;
+import pi.dev.realestate.repositories.UserRepository;
 import pi.dev.realestate.services.interfaces.IPropertyOfferService;
 
 import java.sql.Timestamp;
@@ -11,8 +13,13 @@ import java.util.List;
 public class PropertyOfferService implements IPropertyOfferService {
     @Autowired
     PropertyOfferRepository propertyOfferRepository;
+
+    @Autowired
+    UserRepository userRepository;
     @Override
-    public PropertyOffer addPropertyOffer(PropertyOffer propertyOffer){
+    public PropertyOffer addPropertyOffer(PropertyOffer propertyOffer, int idUser){
+        UserEntity user = userRepository.findById(idUser).orElse(null);
+        propertyOffer.setUser(user);
         propertyOfferRepository.save(propertyOffer);
         return propertyOffer;
     }

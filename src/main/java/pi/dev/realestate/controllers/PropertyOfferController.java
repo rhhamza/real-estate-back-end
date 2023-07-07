@@ -16,9 +16,9 @@ public class PropertyOfferController {
     @Autowired
     IPropertyOfferService iPropertyOfferService;
 
-    @PostMapping("/add")
-    public ResponseEntity<Object> addPropertyOffer(@RequestBody PropertyOffer propertyOffer) {
-        PropertyOffer addedPropertyOffer = iPropertyOfferService.addPropertyOffer(propertyOffer);
+    @PostMapping("/add/{idUser}")
+    public ResponseEntity<Object> addPropertyOffer(@RequestBody PropertyOffer propertyOffer, @PathVariable("idUser") Integer idUser) {
+        PropertyOffer addedPropertyOffer = iPropertyOfferService.addPropertyOffer(propertyOffer, idUser);
         return new ResponseEntity<>(addedPropertyOffer, HttpStatus.CREATED);
     }
 

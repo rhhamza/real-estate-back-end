@@ -30,7 +30,7 @@ public class AppointmentController {
     public ResponseEntity<Object> getAllAppointments() {
         List<Appointment> appointment = iAppointmentService.getAllAppointments();
 
-        return new ResponseEntity<>("Appointment not found", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(appointment, HttpStatus.OK);
     }
 
     @GetMapping("/{idAppointment}")

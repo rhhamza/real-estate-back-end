@@ -88,7 +88,7 @@ public class AuthController {
     }
 
     @PostMapping("registerclient")
-    public ResponseEntity<String> register(@RequestBody UserEntity userEntity) {
+    public ResponseEntity<Object> register(@RequestBody UserEntity userEntity) {
         if (userRepository.existsByEmail(userEntity.getEmail())) {
             return new ResponseEntity<>("Username is taken!", HttpStatus.BAD_REQUEST);
         }
@@ -118,7 +118,7 @@ public class AuthController {
         sendActivationEmail(user);
 
 
-        return new ResponseEntity<>("User registered success!", HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
     @PostMapping("activeAccount")
     public UserEntity activeAccount (@RequestParam int id){

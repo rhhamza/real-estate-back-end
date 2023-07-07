@@ -1,5 +1,6 @@
 package pi.dev.realestate.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import javax.persistence.*;
@@ -34,6 +35,10 @@ public class PropertyOffer {
     Timestamp createdAt;
     @Column(nullable = false)
     Timestamp updatedAt;
+
+    @ManyToOne
+    @JsonIgnore
+    private UserEntity user;
     @PrePersist
     protected void onCreate() {
         createdAt = new Timestamp(System.currentTimeMillis());
@@ -42,5 +47,9 @@ public class PropertyOffer {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = new Timestamp(System.currentTimeMillis());
+    }
+
+    public UserEntity getUser() {
+        return user;
     }
 }

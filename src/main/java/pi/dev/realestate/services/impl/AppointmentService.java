@@ -44,7 +44,6 @@ public class AppointmentService implements IAppointmentService {
             // Check if the property offer has an existing appointment in the same date range
             if (hasExistingAppointmentForProperty(propertyOffer, dateDebut, dateFin)) {
                 throw new IllegalArgumentException("Property offer already has an appointment during the specified date range");
-
             }
 
             // Check if the user has an existing appointment in the same date range
