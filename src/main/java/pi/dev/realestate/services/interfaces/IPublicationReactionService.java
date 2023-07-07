@@ -15,4 +15,6 @@ public interface IPublicationReactionService {
     PublicationReaction updatePublicationReaction(int id, PublicationReaction publicationReaction);
     void deletePublicationReaction(int id);
 
+    PublicationReaction getReactionByUserAndPublication(Integer userId, Integer publicationId);
+
 }
