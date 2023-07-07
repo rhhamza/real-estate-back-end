@@ -1,5 +1,6 @@
 package pi.dev.realestate.services.interfaces;
 
+import org.springframework.web.multipart.MultipartFile;
 import pi.dev.realestate.entities.Company;
 import pi.dev.realestate.entities.StatusType;
 
@@ -17,6 +18,7 @@ public interface ICoompanyService {
     Company updateCompany(int id, Company updatedCompany);
 
     void deleteCompany(int id);
+    //double calculateTotalRevenue(Integer companyId);
 
     List<Company> getCompaniesWithOrdersByStatus(StatusType status);
 }

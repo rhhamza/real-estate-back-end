@@ -91,5 +91,4 @@ public class PublicationReactionService implements IPublicationReactionService {
 
         return null;
     }
-
 }
