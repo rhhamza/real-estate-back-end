@@ -6,6 +6,6 @@ import javax.mail.MessagingException;
 
 public interface IMailAppointment {
 
-       public void sendAppointmentEmail(Appointment appointment) throws MessagingException;
+       public void sendAppointmentEmail(Appointment appointment, int userid ) throws MessagingException;
 
 }

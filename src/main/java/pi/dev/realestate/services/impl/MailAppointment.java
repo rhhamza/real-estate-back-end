@@ -5,14 +5,20 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import pi.dev.realestate.entities.Appointment;
+import pi.dev.realestate.entities.UserEntity;
+import pi.dev.realestate.repositories.UserRepository;
 import pi.dev.realestate.services.interfaces.IMailAppointment;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+
+
 @Service
 public class MailAppointment implements IMailAppointment {
 
+    @Autowired
+    UserRepository userRepository;
     private final JavaMailSender javaMailSender;
 
     @Autowired
@@ -20,8 +26,9 @@ public class MailAppointment implements IMailAppointment {
         this.javaMailSender = javaMailSender;
     }
 
-    public void sendAppointmentEmail(Appointment appointment) {
-        String to = appointment.getUser().getEmail();
+    public void sendAppointmentEmail(Appointment appointment, int userid) {
+        UserEntity use =userRepository.findByID( userid );
+        String to = use.getEmail();
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper helper;
         try {

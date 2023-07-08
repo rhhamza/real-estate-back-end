@@ -27,4 +27,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     List<Appointment> findByUserAndDateRange(@Param("user") UserEntity user,
                                              @Param("dateDebut") LocalDateTime dateDebut,
                                              @Param("dateFin") LocalDateTime dateFin);
+
+    List<Appointment> findByUser_ID(int userId);
 }

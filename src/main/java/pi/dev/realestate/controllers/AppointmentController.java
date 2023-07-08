@@ -7,6 +7,7 @@ import pi.dev.realestate.entities.Appointment;
 import pi.dev.realestate.entities.DTO.AppointmentDto;
 import pi.dev.realestate.entities.PropertyOffer;
 import pi.dev.realestate.entities.UserEntity;
+import pi.dev.realestate.repositories.AppointmentRepository;
 import pi.dev.realestate.services.interfaces.IAppointmentService;
 
 import javax.mail.MessagingException;
@@ -19,6 +20,8 @@ import java.util.List;
 public class AppointmentController {
     @Autowired
     IAppointmentService iAppointmentService;
+    @Autowired
+    AppointmentRepository appointmentRepository;
 
    // @PostMapping("/add")
   //  public ResponseEntity<Object> addAppointment(@RequestBody Appointment appointment) {
@@ -29,8 +32,13 @@ public class AppointmentController {
     @GetMapping("/all")
     public ResponseEntity<Object> getAllAppointments() {
         List<Appointment> appointment = iAppointmentService.getAllAppointments();
-
         return new ResponseEntity<>(appointment, HttpStatus.OK);
+    }
+    
+    @GetMapping("/listby/{userId}")
+    public ResponseEntity<Object> getAllAppointmentsByUser(@PathVariable int userId) {
+        List<Appointment> appointments= appointmentRepository.findByUser_ID(userId);
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 
     @GetMapping("/{idAppointment}")
@@ -61,44 +69,14 @@ public class AppointmentController {
     }
 
     @PostMapping
-    public ResponseEntity<Appointment> createAppointment(@RequestBody AppointmentDto appointmentDto) {
-        // Extract data from the AppointmentDto
-        String title = appointmentDto.getTitle();
-        String discrition = appointmentDto.getDiscrition();
-        LocalDateTime dateStart = appointmentDto.getDateDebut();
-        LocalDateTime dateEnd = appointmentDto.getDateFin();
-       UserEntity user = appointmentDto.getUser();
-        PropertyOffer propertyOffer = appointmentDto.getPropertyOffer();
-       // Company company = appointmentDto.getCompany();
-        boolean online = appointmentDto.isOnline();
-
-        // Generate MeetingLink if online is true
-        String meetingLink = online ? iAppointmentService.generatelink() : null;
-
-        // Create the Appointment object
-        Appointment appointment = new Appointment();
-        appointment.setTitle(title);
-        appointment.setDiscrition(discrition);
-        appointment.setDateDebut(dateStart);
-        appointment.setDateFin(dateEnd);
-        appointment.setOnline(online);
-        appointment.setMeetingLink(meetingLink);
-        appointment.setPropertyOffer(propertyOffer);
-        appointment.setUser(user);
-
-        // Set other properties and relationships if needed
-
-        // Save the Appointment object
-        //return iAppointmentService.addAppointment(appointment);
-
+    public ResponseEntity<Appointment> createAppointment(@RequestBody Appointment appointment) {
         try {
             Appointment savedAppointment = iAppointmentService.addAppointment(appointment);
             return ResponseEntity.ok(savedAppointment);
         } catch (MessagingException e) {
-            // Gérez l'exception ou enregistrez une erreur
-            // Par exemple, retournez une réponse d'erreur appropriée avec un message d'erreur
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
+    }
     }
 
     //  @GetMapping("generatelin/{idAppointment}")
@@ -111,4 +89,3 @@ public class AppointmentController {
     //public String sendMail(@RequestBody MailDetail mailDetail) {
      //   return sendMail(mailDetail);
    // }
-}
