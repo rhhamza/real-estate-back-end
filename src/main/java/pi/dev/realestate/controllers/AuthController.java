@@ -18,7 +18,7 @@ import pi.dev.realestate.entities.Company;
 import pi.dev.realestate.entities.DTO.AuthResponseDto;
 import pi.dev.realestate.entities.DTO.LoginDTO;
 
-import pi.dev.realestate.entities.Roles;
+import pi.dev.realestate.entities.DTO.RestePasswordDTO;
 import pi.dev.realestate.entities.StatusType;
 import pi.dev.realestate.entities.UserEntity;
 import pi.dev.realestate.repositories.CompanyRepository;
@@ -26,6 +26,7 @@ import pi.dev.realestate.repositories.RolesRepository;
 import pi.dev.realestate.repositories.UserRepository;
 import pi.dev.realestate.security.JWTGenerator;
 import pi.dev.realestate.services.impl.UserService;
+import pi.dev.realestate.services.interfaces.IUserService;
 
 import javax.mail.PasswordAuthentication;
 
@@ -35,8 +36,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.*;
 
 @AllArgsConstructor
@@ -59,6 +58,9 @@ public class AuthController {
     ClientRegistrationRepository clientRegistrationRepository;
 
     @Autowired
+    IUserService iUserService;
+
+    @Autowired
     UserService userService;
 
     private static String authorizationRequestBaseUri
@@ -72,6 +74,8 @@ public class AuthController {
     @PostMapping("login")
     public ResponseEntity<AuthResponseDto> login(@RequestBody LoginDTO loginDto) {
         Optional<UserEntity> user = userRepository.findByEmail(loginDto.getEmail());
+
+
         if (user == null || user.get().getStatus() != StatusType.ACTIVE) {
             // User not found or user's status is not active
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -82,7 +86,9 @@ public class AuthController {
                         loginDto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtGenerator.generateToken(authentication);
-        return new ResponseEntity<>(new AuthResponseDto(token), HttpStatus.OK);
+
+
+        return new ResponseEntity<>(new AuthResponseDto(token,user.get().getID()), HttpStatus.OK);
     }
 
     @PostMapping("registerclient")
@@ -182,5 +188,62 @@ public class AuthController {
         return "oauth_login";
 
             }
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody RestePasswordDTO restePasswordDTO) {
+
+        Optional<UserEntity> user = userRepository.findByEmail(restePasswordDTO.getEmail());
+        if (user.isPresent()) {
+            sendPasswordResetEmail(user.get());
+            return new ResponseEntity<>("Password reset email sent!", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("User not found", HttpStatus.NO_CONTENT);
+        }
+    }
+
+    private void sendPasswordResetEmail(UserEntity user) {
+
+        String resetLink = "http://localhost:4200/auth/reset-password?userId=" + user.getID();
+        String subject = "Reset your password";
+        String body = "Dear " + user.getFirstname() + ",\n\n"
+                + "You have requested to reset your password. Please click the link below to reset your password:\n"
+                + resetLink + "\n\n"
+                + "If you did not initiate this request, please ignore this email.\n\n"
+                + "Best regards,\n"
+                + "Your Application Team";
+
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("hamza.melki.isetcom@gmail.com", "ahbklusopnzwbduy");
+            }
+        });
+
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("hamza.melki.isetcom@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getEmail()));
+            message.setSubject(subject);
+            message.setText(body);
+            Transport.send(message);
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            // Handle the exception appropriately
+        }
+    }
+
+    @GetMapping ("/{userId}")
+    public UserEntity getUserById(@PathVariable int userId){
+        return iUserService.getUser(userId);
+    }
+
+    @GetMapping("/user/{firstName}")
+    public List<UserEntity> getUserByFirstName(@PathVariable String firstName){
+        return iUserService.getUserByFirstName(firstName);
+    }
 
 }

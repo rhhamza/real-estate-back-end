@@ -36,4 +36,9 @@ public class UserService implements IUserService {
     public UserEntity getUser(int id){
         return userRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public List<UserEntity> getUserByFirstName(String firstname) {
+        return userRepository.findUserEntityByFirstname(firstname);
+    }
 }

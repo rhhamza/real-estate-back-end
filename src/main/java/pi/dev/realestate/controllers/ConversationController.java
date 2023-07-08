@@ -44,7 +44,7 @@ public class ConversationController {
         return ResponseEntity.ok(updatedConversation);
     }
 
-    @GetMapping("/{conversationId}")
+    @GetMapping("/conv/{conversationId}")
     public Conversation getConversationByid(@PathVariable("conversationById") Long id){
         return iconversationService.getConversationbyId(id);
     }

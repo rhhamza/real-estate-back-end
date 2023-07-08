@@ -1,11 +1,13 @@
 package pi.dev.realestate.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 import pi.dev.realestate.entities.Conversation;
 import pi.dev.realestate.entities.Message;
+import pi.dev.realestate.repositories.MessageRepository;
 import pi.dev.realestate.services.interfaces.IMessageService;
 
 import java.util.List;
@@ -15,6 +17,9 @@ import java.util.List;
 public class MessageController {
     @Autowired
     private IMessageService imessageService;
+
+    @Autowired
+    private MessageRepository messageRepository;
 
     @PostMapping("/add")
     public ResponseEntity<Message> sendMessage(@RequestBody Message message) {
@@ -32,5 +37,11 @@ public class MessageController {
     public ResponseEntity<Void> deleteMessage(@PathVariable Long messageId) {
         imessageService.deleteMessage(messageId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Message>> getAllMessage(){
+    List<Message> mesagess = messageRepository.findAll();
+    return new ResponseEntity<>(mesagess, HttpStatus.OK);
     }
 }

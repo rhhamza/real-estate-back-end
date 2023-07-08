@@ -11,5 +11,5 @@ import java.util.List;
 
 @Repository
 public interface PublicationReactionRepository extends JpaRepository<PublicationReaction, Integer> {
-
+    PublicationReaction findByUserAndPublication(UserEntity user, Publication publication);
 }

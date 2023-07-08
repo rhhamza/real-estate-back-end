@@ -13,4 +13,6 @@ public interface IUserService {
     List<UserEntity> getAlUser();
 
     UserEntity getUser(int id);
+
+    List<UserEntity> getUserByFirstName(String firstname);
 }

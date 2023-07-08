@@ -20,12 +20,11 @@ import java.util.Optional;
 public class PublicationService implements IPublicationService {
     @Autowired
     UserRepository userRepository;
-    private final PublicationRepository publicationRepository;
-
     @Autowired
-    public PublicationService(PublicationRepository publicationRepository) {
-        this.publicationRepository = publicationRepository;
-    }
+    PublicationRepository publicationRepository;
+
+
+
 
     @Override
     public Publication getPublicationById(int id) {
@@ -114,11 +113,18 @@ public class PublicationService implements IPublicationService {
 
         for (PublicationComment comment : comments) {
             UserEntity user = comment.getUser();
-            CommentDTO commentDto = new CommentDTO(comment.getId(), comment.getContent(), user.getFirstname());
+            CommentDTO commentDto = new CommentDTO(
+                    comment.getId(),
+                    comment.getContent(),
+                    user.getFirstname(),
+                    comment.getCreatedAt(),
+                    comment.getUpdatedAt()
+            );
             commentDtos.add(commentDto);
         }
 
         return commentDtos;
     }
+
 
 }
