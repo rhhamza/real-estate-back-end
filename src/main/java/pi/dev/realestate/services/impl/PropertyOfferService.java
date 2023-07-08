@@ -45,6 +45,8 @@ public class PropertyOfferService implements IPropertyOfferService {
             existingPropertyOffer.setLocation(updatedPropertyOffer.getLocation());
             existingPropertyOffer.setBedrooms(updatedPropertyOffer.getBedrooms());
             existingPropertyOffer.setBathrooms(updatedPropertyOffer.getBathrooms());
+            existingPropertyOffer.setDescription(updatedPropertyOffer.getDescription());
+            existingPropertyOffer.setPicture(updatedPropertyOffer.getPicture());
             existingPropertyOffer.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
             propertyOfferRepository.save(existingPropertyOffer);
         }
