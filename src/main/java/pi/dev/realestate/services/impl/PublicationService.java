@@ -61,7 +61,6 @@ public class PublicationService implements IPublicationService {
             // Update the existing publication with the new title, content, user, etc.
             existingPublication.setTitle(publication.getTitle());
             existingPublication.setContent(publication.getContent());
-            existingPublication.setUser(publication.getUser());
             return publicationRepository.save(existingPublication);
         }
         return null;
