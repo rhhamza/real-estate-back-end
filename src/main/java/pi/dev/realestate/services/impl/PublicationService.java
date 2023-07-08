@@ -58,10 +58,10 @@ public class PublicationService implements IPublicationService {
     public Publication updatePublication(int id, Publication publication) {
         Publication existingPublication = getPublicationById(id);
         if (existingPublication != null) {
+
             // Update the existing publication with the new title, content, user, etc.
             existingPublication.setTitle(publication.getTitle());
             existingPublication.setContent(publication.getContent());
-            existingPublication.setUser(publication.getUser());
             return publicationRepository.save(existingPublication);
         }
         return null;
@@ -119,7 +119,7 @@ public class PublicationService implements IPublicationService {
                     comment.getId(),
                     comment.getContent(),
                     user.getFirstname(),
-                    comment.getCreatedAt(),
+user.getID(),          comment.getCreatedAt(),
                     comment.getUpdatedAt()
             );
             commentDtos.add(commentDto);
