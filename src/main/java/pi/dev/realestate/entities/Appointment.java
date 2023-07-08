@@ -30,6 +30,7 @@ public class Appointment  {
         //updatedAt = new Timestamp(System.currentTimeMillis());
     }
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private UserEntity user;
     @ManyToOne
     private Company company;

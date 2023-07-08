@@ -34,43 +34,44 @@ public class AppointmentService implements IAppointmentService {
         @Autowired
         IMailAppointment iMailAppointment;
 
-        @Override
-        public Appointment addAppointment(Appointment appointment) throws MessagingException {
-            LocalDateTime dateDebut = appointment.getDateDebut();
-            LocalDateTime dateFin = appointment.getDateFin();
-            PropertyOffer propertyOffer = appointment.getPropertyOffer();
-            UserEntity user = appointment.getUser();
-
-            // Check if the property offer has an existing appointment in the same date range
-            if (hasExistingAppointmentForProperty(propertyOffer, dateDebut, dateFin)) {
-                throw new IllegalArgumentException("Property offer already has an appointment during the specified date range");
-
-            }
-
-            // Check if the user has an existing appointment in the same date range
-            if (hasExistingAppointmentForUser(user, dateDebut, dateFin)) {
-                throw new IllegalArgumentException("User already has an appointment during the specified date range");
-
-            }
-            PropertyOffer propertyOffer1 = propertyOfferRepository.findById(appointment.getPropertyOffer().getId())
-                    .orElseThrow(() -> new IllegalArgumentException("Invalid PropertyOffer ID"));
-            appointment.setPropertyOffer(propertyOffer1);
-            // Set the createdAt and updatedAt timestamps
-            Timestamp now = new Timestamp(System.currentTimeMillis());
-            appointment.setCreatedAt(now);
-          // appointment.setUser(appointment.getUser());
-
-            //appointment.setUpdatedAt(now);
-            Appointment savedAppointment = appointmentRepository.save(appointment);
 
 
-               // mailAppointment.sendAppointmentEmail(savedAppointment);
-            iMailAppointment.sendAppointmentEmail(savedAppointment);
 
-            return savedAppointment;
+    @Override
+    public Appointment addAppointment(Appointment appointment) throws MessagingException {
+        LocalDateTime dateDebut = appointment.getDateDebut();
+        LocalDateTime dateFin = appointment.getDateFin();
+        PropertyOffer propertyOffer = appointment.getPropertyOffer();
+        UserEntity user = appointment.getUser();
+        boolean online = appointment.isOnline();
+        String meetingLink = online ? generatelink() : null;
 
 
+        // Check if the property offer has an existing appointment in the same date range
+        if (hasExistingAppointmentForProperty(propertyOffer, dateDebut, dateFin)) {
+            throw new IllegalArgumentException("Property offer already has an appointment during the specified date range");
         }
+
+        // Check if the user has an existing appointment in the same date range
+        if (hasExistingAppointmentForUser(user, dateDebut, dateFin)) {
+            throw new IllegalArgumentException("User already has an appointment during the specified date range");
+        }
+
+
+        appointment.setMeetingLink(meetingLink);
+      // Set property offer ID
+
+        // Set the createdAt timestamp
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        appointment.setCreatedAt(now);
+
+        // Save the Appointment object
+        Appointment savedAppointment = appointmentRepository.save(appointment);
+        int userid=  savedAppointment.getUser().getID();
+        iMailAppointment.sendAppointmentEmail(savedAppointment, userid);
+
+        return savedAppointment;
+    }
 
 
 
@@ -79,8 +80,8 @@ public class AppointmentService implements IAppointmentService {
         return !existingAppointments.isEmpty();
     }
 
-    private boolean hasExistingAppointmentForUser(UserEntity user, LocalDateTime dateDebut, LocalDateTime dateFin) {
-        List<Appointment> existingAppointments = appointmentRepository.findByUserAndDateRange(user, dateDebut, dateFin);
+    private boolean hasExistingAppointmentForUser(UserEntity userconnect, LocalDateTime dateDebut, LocalDateTime dateFin) {
+        List<Appointment> existingAppointments = appointmentRepository.findByUserAndDateRange(userconnect, dateDebut, dateFin);
         return !existingAppointments.isEmpty();
     }
 
@@ -159,9 +160,10 @@ public class AppointmentService implements IAppointmentService {
     }
 
     private String generateUniqueMeetingId() {
+
+
         return RandomStringUtils.randomAlphanumeric(10);
     }
-
 
 }
 
