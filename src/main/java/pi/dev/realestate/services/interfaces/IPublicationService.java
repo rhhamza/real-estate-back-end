@@ -1,6 +1,7 @@
 package pi.dev.realestate.services.interfaces;
 
 import pi.dev.realestate.entities.DTO.CommentDTO;
+import pi.dev.realestate.entities.DTO.PublicationDTO;
 import pi.dev.realestate.entities.Publication;
 import pi.dev.realestate.entities.PublicationComment;
 import pi.dev.realestate.entities.ReactionType;
@@ -22,4 +23,6 @@ public interface IPublicationService {
     List<PublicationComment> getAllPublicationComments(int publicationId);
 
     List<CommentDTO> getAllPublicationCommentsWithUser(int publicationId);
+
+    List<PublicationDTO> getAllFullPublications();
 }
