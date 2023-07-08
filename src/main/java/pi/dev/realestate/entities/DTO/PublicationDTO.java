@@ -21,6 +21,8 @@ public class PublicationDTO {
 
     private String content;
 
+    private  String picture;
+
     private Timestamp createdAt;
 
     private Timestamp updatedAt;
@@ -36,6 +38,7 @@ public class PublicationDTO {
                 publication.getId(),
                 publication.getTitle(),
                 publication.getContent(),
+                publication.getPicture(),
                 publication.getCreatedAt(),
                 publication.getUpdatedAt(),
                 publication.getUser(),

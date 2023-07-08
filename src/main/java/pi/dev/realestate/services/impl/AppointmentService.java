@@ -34,6 +34,9 @@ public class AppointmentService implements IAppointmentService {
         @Autowired
         IMailAppointment iMailAppointment;
 
+
+
+
     @Override
     public Appointment addAppointment(Appointment appointment) throws MessagingException {
         LocalDateTime dateDebut = appointment.getDateDebut();
@@ -163,7 +166,3 @@ public class AppointmentService implements IAppointmentService {
     }
 
 }
-
-
-
-

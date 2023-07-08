@@ -27,6 +27,8 @@ public class Publication {
     @JsonIgnore
     private UserEntity user;
 
+    private String picture;
+
     @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<PublicationComment> comments = new ArrayList<>();

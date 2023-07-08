@@ -34,7 +34,6 @@ public class AppointmentController {
         List<Appointment> appointment = iAppointmentService.getAllAppointments();
         return new ResponseEntity<>(appointment, HttpStatus.OK);
     }
-    
     @GetMapping("/listby/{userId}")
     public ResponseEntity<Object> getAllAppointmentsByUser(@PathVariable int userId) {
         List<Appointment> appointments= appointmentRepository.findByUser_ID(userId);
