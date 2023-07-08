@@ -6,7 +6,8 @@ import lombok.experimental.FieldDefaults;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+
+import org.hibernate.mapping.List;
 
 @Entity
 @Table(name="propertyOffers")
@@ -29,13 +30,14 @@ public class PropertyOffer {
     Double price;
     Double sqm;
     String location;
+    String description;
     int bedrooms;
     int bathrooms;
     @Column(nullable = false, updatable = false)
     Timestamp createdAt;
     @Column(nullable = false)
     Timestamp updatedAt;
-
+    String picture;
     @ManyToOne
     @JsonIgnore
     private UserEntity user;
