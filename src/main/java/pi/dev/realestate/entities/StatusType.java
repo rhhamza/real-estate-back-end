@@ -6,5 +6,6 @@ public enum StatusType {
     NOTIFIED,
     ACCEPTED,
     REJECTED,
+    Accepted,
     PENDING
 }

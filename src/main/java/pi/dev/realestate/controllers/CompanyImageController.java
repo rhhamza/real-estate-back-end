@@ -23,42 +23,16 @@ public class CompanyImageController {
         this.companyImageService = companyImageService;
     }
 
-    @PostMapping(value = "upload/{coId}")
-    public ResponseEntity<CompanyImage> uploadImage(
-            @RequestParam("name") String name,
-            @RequestParam("type") String type,
-            @RequestParam("file") MultipartFile file,
-            @PathVariable("coId") int companyId
-            ) {
-        try {
-            CompanyImage uploadedImage = companyImageService.uploadImage(name, type, file, companyId);
-            return ResponseEntity.ok(uploadedImage);
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+
+    @PostMapping("/upload/{id}")
+    public void uploadImage(@RequestParam("attachement")MultipartFile file, @PathVariable("id") int id) throws IOException{
+        companyImageService.uploadImage(file, id);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<byte[]> getImageById(@PathVariable Long id) {
-        Optional<CompanyImage> imageOptional = companyImageService.getImageById(id);
-        if (imageOptional.isPresent()) {
-            CompanyImage image = imageOptional.get();
-            return ResponseEntity.ok()
-                    .header("Content-Disposition", "attachment; filename=\"" + image.getName() + "\"")
-                    .body(image.getPicByte());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    public CompanyImage getImageById(@PathVariable("id") int id) {
+        return companyImageService.getImageById(id);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteImageById(@PathVariable Long id) {
-        Optional<CompanyImage> imageOptional = companyImageService.getImageById(id);
-        if (imageOptional.isPresent()) {
-            companyImageService.deleteImageById(id);
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+
 }

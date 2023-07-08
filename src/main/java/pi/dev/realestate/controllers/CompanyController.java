@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pi.dev.realestate.entities.Company;
 import pi.dev.realestate.entities.CompanyImage;
+import pi.dev.realestate.repositories.CompanyRepository;
 import pi.dev.realestate.services.interfaces.ICompanyImageService;
 import pi.dev.realestate.services.interfaces.ICoompanyService;
 
@@ -24,6 +25,8 @@ public class CompanyController {
 
     @Autowired
     ICompanyImageService iCompanyImageService;
+    @Autowired
+    CompanyRepository companyRepository;
 
     /*
     @PostMapping(value = "/add", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -46,11 +49,14 @@ public class CompanyController {
             return iCompanyService.addCompany(company);
 
     }
-
-    @GetMapping("/all")
+    @GetMapping(value ="/all")
     public ResponseEntity<Object> getAllCompanies() {
-        List<Company> companies = iCompanyService.getAllCompanies();
-        return new ResponseEntity<>(companies, HttpStatus.OK);
+        try {
+            List<Company> companies = companyRepository.findAll();
+            return new ResponseEntity<>(companies, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Companies not found", HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping("/{id}")

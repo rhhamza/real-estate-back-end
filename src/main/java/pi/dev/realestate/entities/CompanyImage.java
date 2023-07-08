@@ -16,7 +16,7 @@ public class CompanyImage {
     private Long id;
     private String name;
     private String type;
-    @Column(length = 50000000)
+    @Lob
     private byte[] picByte;
 
     public CompanyImage(String name, String type, byte[] picByte) {

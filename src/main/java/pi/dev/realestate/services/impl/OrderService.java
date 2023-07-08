@@ -2,9 +2,6 @@ package pi.dev.realestate.services.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import pi.dev.realestate.entities.Company;
 import pi.dev.realestate.entities.Order;
@@ -13,11 +10,7 @@ import pi.dev.realestate.repositories.CompanyRepository;
 import pi.dev.realestate.repositories.OrderRepository;
 import pi.dev.realestate.services.interfaces.IOrderService;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.time.temporal.*;
 
 
 import java.sql.Timestamp;
@@ -78,7 +71,9 @@ public class OrderService implements IOrderService {
    @Override
    public Order addOrderAndAssignToCompany (Order order, int companyId)
    {
+
        Order savedOrder = orderRepository.save(order);
+       savedOrder.setStatus(StatusType.PENDING);
        Company company = companyRepository.findById(companyId).orElse(null);
        if (company != null) {
            savedOrder.setCompany(company);
@@ -90,6 +85,27 @@ public class OrderService implements IOrderService {
 
        return savedOrder;
    }
+
+
+    @Override
+    public Order acceptOrder(int id){
+        Order order = orderRepository.findById(id).orElse(null);
+        if (order != null) {
+            order.setStatus(StatusType.Accepted);
+            orderRepository.save(order);
+        }
+        return order;
+    }
+
+    @Override
+    public Order rejectOrder(int id){
+        Order order = orderRepository.findById(id).orElse(null);
+        if (order != null) {
+            order.setStatus(StatusType.REJECTED);
+            orderRepository.save(order);
+        }
+        return order;
+    }
 
 
 //    @Override
