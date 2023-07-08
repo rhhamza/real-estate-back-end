@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pi.dev.realestate.entities.*;
 import pi.dev.realestate.entities.DTO.CommentDTO;
+import pi.dev.realestate.entities.DTO.PublicationDTO;
 import pi.dev.realestate.repositories.PublicationRepository;
 import pi.dev.realestate.repositories.UserRepository;
 import pi.dev.realestate.services.interfaces.IPublicationService;
@@ -13,6 +14,7 @@ import pi.dev.realestate.services.interfaces.IPublicationService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -126,5 +128,9 @@ public class PublicationService implements IPublicationService {
         return commentDtos;
     }
 
-
+    @Override
+    public List<PublicationDTO> getAllFullPublications() {
+        List<Publication> publications = publicationRepository.findAll();
+        return publications.stream().map(PublicationDTO::fromPublication).collect(Collectors.toList());
+    }
 }

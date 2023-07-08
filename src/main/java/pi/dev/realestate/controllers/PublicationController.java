@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pi.dev.realestate.entities.DTO.CommentDTO;
+import pi.dev.realestate.entities.DTO.PublicationDTO;
 import pi.dev.realestate.entities.Publication;
 import pi.dev.realestate.entities.PublicationComment;
 import pi.dev.realestate.entities.ReactionType;
@@ -91,5 +92,12 @@ public class PublicationController {
     @GetMapping("/{publicationId}/commentsWithuser")
     public List<CommentDTO> getAllPublicationCommentsWithUser(@PathVariable int publicationId) {
         return publicationService.getAllPublicationCommentsWithUser(publicationId);
+    }
+
+
+    @GetMapping("/fullpublications")
+    public ResponseEntity<List<PublicationDTO>> getAllFullPublications() {
+        List<PublicationDTO> publications = publicationService.getAllFullPublications();
+        return ResponseEntity.ok(publications);
     }
 }
