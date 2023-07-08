@@ -53,6 +53,7 @@ public class CompanyService implements ICoompanyService {
             existingCompany.setEmail(updatedCompany.getEmail());
             existingCompany.setImage(updatedCompany.getImage());
             existingCompany.setStatus(updatedCompany.getStatus());
+            existingCompany.setLogo(updatedCompany.getLogo());
             existingCompany.setDescription(updatedCompany.getDescription());
             existingCompany.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
             companyRepository.save(existingCompany);

@@ -19,10 +19,12 @@ import java.util.Set;
 public class Company {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
     private String address;
     private String description;
+    private String logo;
     private int phone;
     private String email;
     private StatusType status;
