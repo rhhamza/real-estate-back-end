@@ -2,6 +2,10 @@ package pi.dev.realestate.services.impl;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import pi.dev.realestate.entities.Company;
 import pi.dev.realestate.entities.Order;
@@ -10,13 +14,18 @@ import pi.dev.realestate.repositories.CompanyRepository;
 import pi.dev.realestate.repositories.OrderRepository;
 import pi.dev.realestate.services.interfaces.IOrderService;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 
 
 import java.sql.Timestamp;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
+@EnableScheduling
 public class OrderService implements IOrderService {
    @Autowired
    OrderRepository orderRepository;
@@ -24,6 +33,8 @@ public class OrderService implements IOrderService {
    CompanyRepository companyRepository;
    @Autowired
    EmailService emailService;
+    @Autowired
+    JavaMailSender javaMailSender;
 //    @Autowired
 //    NotificationRepository notificationRepository;
 //    private NotificationService notificationService;
@@ -183,4 +194,36 @@ public class OrderService implements IOrderService {
        }
        return totalRevenue;
    }*/
+@Override
+@Scheduled(fixedRate = 60000) // Schedule to run every 60 seconds (1 minute)
+public List<Order> allExpiredOrders() {
+    LocalDate currentLocalDate = LocalDate.now();
+    Date currentDate = java.sql.Date.valueOf(currentLocalDate);
+    List<Order> allOrders = orderRepository.findAll();
+
+    List<Order> expiredOrders = allOrders.stream()
+            .filter(order -> {
+                LocalDate endDate = order.getEndDate();
+                long daysDifference = ChronoUnit.DAYS.between(currentLocalDate, endDate);
+                return daysDifference < 10;
+            }).collect(Collectors.toList());
+
+    List<Company> companiesWithExpiredOrders = expiredOrders.stream()
+            .map(Order::getCompany)
+            .distinct()
+            .collect(Collectors.toList());
+
+    companiesWithExpiredOrders.forEach(this::sendOrderConfirmationEmail);
+
+    return expiredOrders;
+}
+    public void sendOrderConfirmationEmail(Company company) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(company.getEmail());
+        message.setSubject("Expiration order");
+        message.setText("Dear " + company.getName() + ",\n\nYour order (ID: ) has been expired.\n\nThank you for check your Order.");
+
+        this.javaMailSender.send(message);
+    }
+
 }
